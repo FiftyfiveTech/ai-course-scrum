@@ -1,0 +1,364 @@
+[
+  {
+    "id": "upd-031",
+    "raw": "Done: merged the OdooWriter allow-list wrapper and wrote tests for it (#3683, #3684). Next: dry-run smoke test on the sandbox project. No blockers.",
+    "member_id": "dev-a",
+    "standup_date": "2026-10-26",
+    "source": "synthetic",
+    "done": [
+      { "text": "merged OdooWriter allow-list wrapper", "origin": "reported", "task_id": "3683" },
+      { "text": "wrote tests for allow-list wrapper", "origin": "reported", "task_id": "3684" }
+    ],
+    "next": [
+      { "text": "dry-run smoke test on sandbox project", "origin": "reported", "task_id": null }
+    ],
+    "blockers": [],
+    "task_ids": [
+      { "task_id": "3683", "origin": "reported", "mention": "#3683" },
+      { "task_id": "3684", "origin": "reported", "mention": "#3684" }
+    ],
+    "commitments": [],
+    "notes": "Two task ids, two done items, clean next. No commitment date given."
+  },
+  {
+    "id": "upd-032",
+    "raw": "Still blocked on the Teams tenant approval. Saurabh said he'd follow up with IT today but I haven't heard back. Without it I can't prove the bot receives replies. Everything else is unblocked.",
+    "member_id": "dev-b",
+    "standup_date": "2026-10-26",
+    "source": "synthetic",
+    "done": [],
+    "next": [],
+    "blockers": [
+      { "text": "Teams tenant approval pending — IT follow-up not yet received", "origin": "reported", "task_id": null, "owner_id": "dev-saurabh" }
+    ],
+    "task_ids": [],
+    "commitments": [],
+    "notes": "Named owner (Saurabh) for blocker. Q7 fires if this blocker is still open next day."
+  },
+  {
+    "id": "upd-033",
+    "raw": "WFH today. Finished first pass of deadline tracking logic — overdue and due-in-2-days both computing correctly. Still need the dev-date-vs-board-date comparison. Aiming to wrap that up this afternoon.",
+    "member_id": "dev-c",
+    "standup_date": "2026-10-26",
+    "source": "synthetic",
+    "done": [
+      { "text": "deadline tracking: overdue and due-in-2-days computing correctly", "origin": "reported", "task_id": "3679" }
+    ],
+    "next": [
+      { "text": "implement dev-date vs board-date comparison", "origin": "reported", "task_id": "3679" }
+    ],
+    "blockers": [],
+    "task_ids": [
+      { "task_id": "3679", "origin": "inferred", "mention": "deadline tracking logic" }
+    ],
+    "commitments": [
+      { "text": "dev-date vs board-date comparison done", "origin": "reported", "due_date": "2026-10-26", "date_type": "explicit", "task_id": "3679" }
+    ],
+    "notes": "WFH is not a blocker. Task id inferred from 'deadline tracking' → SCRUM-020 → 3679."
+  },
+  {
+    "id": "upd-034",
+    "raw": "Completed #3685 two days early — gate phase 1 checks are all green on the dev set. Wrote up the results. Happy to move on to the 5-day real run if Yash is OK with it.",
+    "member_id": "dev-a",
+    "standup_date": "2026-10-26",
+    "source": "synthetic",
+    "done": [
+      { "text": "gate phase 1 checks all green on dev set, results written up", "origin": "reported", "task_id": "3685" }
+    ],
+    "next": [
+      { "text": "start 5-day real run if Yash approves", "origin": "inferred", "task_id": "3691" }
+    ],
+    "blockers": [],
+    "task_ids": [
+      { "task_id": "3685", "origin": "reported", "mention": "#3685" },
+      { "task_id": "3691", "origin": "inferred", "mention": "5-day real run" }
+    ],
+    "commitments": [],
+    "notes": "Task completed ahead of schedule. Q2 fires if Odoo still shows In Progress. Next is conditional on Yash approval — inferred."
+  },
+  {
+    "id": "upd-035",
+    "raw": "Two blockers from last week: the staging DB issue is resolved (ops fixed it Friday), but the design sign-off is still open. I've chased it twice. Today I'll work around it and write the report template with placeholder styles.",
+    "member_id": "dev-b",
+    "standup_date": "2026-10-26",
+    "source": "synthetic",
+    "done": [],
+    "next": [
+      { "text": "write report template with placeholder styles", "origin": "reported", "task_id": null }
+    ],
+    "blockers": [
+      { "text": "design sign-off still pending", "origin": "reported", "task_id": null, "owner_id": null }
+    ],
+    "task_ids": [],
+    "commitments": [],
+    "notes": "One blocker resolved (staging DB — should be closed), one still open (design). Dev workaround mentioned."
+  },
+  {
+    "id": "upd-036",
+    "raw": "Will sync with Ritika this afternoon on the label review — she flagged some edge cases I want to go through. Nothing to report on code yet today.",
+    "member_id": "dev-c",
+    "standup_date": "2026-10-26",
+    "source": "synthetic",
+    "done": [],
+    "next": [
+      { "text": "sync with Ritika on label review edge cases", "origin": "reported", "task_id": null }
+    ],
+    "blockers": [],
+    "task_ids": [],
+    "commitments": [],
+    "notes": "Next is a meeting / sync, not a code task. No task id, no commitment. Q5 may fire."
+  },
+  {
+    "id": "upd-037",
+    "raw": "Fixed the message_post HTML escaping issue. Confirmed with a real call to the sandbox project — the note renders as HTML, not escaped tags. Also updated the known-traps doc.",
+    "member_id": "dev-a",
+    "standup_date": "2026-10-27",
+    "source": "synthetic",
+    "done": [
+      { "text": "fixed message_post HTML escaping issue", "origin": "reported", "task_id": null },
+      { "text": "confirmed fix with real sandbox call — note renders as HTML", "origin": "reported", "task_id": null },
+      { "text": "updated known-traps doc", "origin": "reported", "task_id": null }
+    ],
+    "next": [],
+    "blockers": [],
+    "task_ids": [],
+    "commitments": [],
+    "notes": "Three done items, no next items, no commitments. No task id — Q5 may fire."
+  },
+  {
+    "id": "upd-038",
+    "raw": "I committed to having the blocker ledger done by Monday but I need to push it — the Teams spike is taking longer than expected and it's higher priority. Aiming for Wednesday now.",
+    "member_id": "dev-b",
+    "standup_date": "2026-10-27",
+    "source": "synthetic",
+    "done": [],
+    "next": [
+      { "text": "complete blocker ledger", "origin": "reported", "task_id": null }
+    ],
+    "blockers": [],
+    "task_ids": [],
+    "commitments": [
+      { "text": "blocker ledger done", "origin": "reported", "due_date": "2026-10-28", "date_type": "explicit", "task_id": null }
+    ],
+    "notes": "Commitment explicitly deferred. Prior commitment (Monday = 2026-10-26) should be marked deferred. New commitment Wednesday = 2026-10-28."
+  },
+  {
+    "id": "upd-039",
+    "raw": "Quick one: done with the idempotency key implementation — (standup_id, task_id, kind) unique constraint is in and tested. Next I'll add the standup:<id> marker to note bodies. No blockers. Is anyone working on the audit log table yet?",
+    "member_id": "dev-c",
+    "standup_date": "2026-10-27",
+    "source": "synthetic",
+    "done": [
+      { "text": "idempotency key (standup_id, task_id, kind) unique constraint implemented and tested", "origin": "reported", "task_id": null }
+    ],
+    "next": [
+      { "text": "add standup:<id> marker to note bodies", "origin": "reported", "task_id": null }
+    ],
+    "blockers": [],
+    "task_ids": [],
+    "commitments": [],
+    "notes": "Question at the end ('is anyone working on...') is not a blocker — do not extract. No task ids given."
+  },
+  {
+    "id": "upd-040",
+    "raw": "Spent the day reviewing PRs and doing code review for Vimal's Teams spike. Good work. Left detailed comments. Nothing of my own to ship today.",
+    "member_id": "dev-a",
+    "standup_date": "2026-10-27",
+    "source": "synthetic",
+    "done": [
+      { "text": "reviewed PRs and left detailed comments on Vimal's Teams spike", "origin": "reported", "task_id": null }
+    ],
+    "next": [],
+    "blockers": [],
+    "task_ids": [],
+    "commitments": [],
+    "notes": "No next items — review work done, nothing personal to ship. No task id for the Teams spike work."
+  },
+  {
+    "id": "upd-041",
+    "raw": "Big day: merged the scheduler (cron + holiday skip + unique key), the CLI adapter (open/collect/close/report states), the fake clock test helper, and the 3-day continuity test. All passing. The product is real.",
+    "member_id": "dev-b",
+    "standup_date": "2026-10-28",
+    "source": "synthetic",
+    "done": [
+      { "text": "merged scheduler with cron, holiday skip, and unique key", "origin": "reported", "task_id": null },
+      { "text": "merged CLI adapter (open/collect/close/report states)", "origin": "reported", "task_id": null },
+      { "text": "merged fake clock test helper", "origin": "reported", "task_id": null },
+      { "text": "merged and passing 3-day continuity test", "origin": "reported", "task_id": "3671" }
+    ],
+    "next": [],
+    "blockers": [],
+    "task_ids": [
+      { "task_id": "3671", "origin": "inferred", "mention": "3-day continuity test" }
+    ],
+    "commitments": [],
+    "notes": "Long done list — four merged items. Task id inferred for continuity test = 3671."
+  },
+  {
+    "id": "upd-042",
+    "raw": "We got the Teams bot receiving messages without @mention — Vimal and I paired on it this morning. The RSC consent finally came through from IT. Bot posts on schedule and reads sender id. Go for the Teams adapter.",
+    "member_id": "dev-c",
+    "standup_date": "2026-10-28",
+    "source": "synthetic",
+    "done": [
+      { "text": "Teams bot receives messages without @mention (paired with Vimal)", "origin": "reported", "task_id": null },
+      { "text": "RSC consent received from IT", "origin": "reported", "task_id": null },
+      { "text": "bot posts on schedule and reads sender id", "origin": "reported", "task_id": null }
+    ],
+    "next": [
+      { "text": "proceed with Teams adapter implementation", "origin": "inferred", "task_id": null }
+    ],
+    "blockers": [],
+    "task_ids": [],
+    "commitments": [],
+    "notes": "Paired work ('we') — both devs contributed but only one updating. Blocker from upd-032 is now resolved. Next is inferred from 'go for the Teams adapter'."
+  },
+  {
+    "id": "upd-043",
+    "raw": "Is the dry-run switch supposed to default to 'dry' or 'off'? I implemented it as 'dry' based on the PRD but want to confirm before I merge. Also finished the audit log table migration.",
+    "member_id": "dev-a",
+    "standup_date": "2026-10-28",
+    "source": "synthetic",
+    "done": [
+      { "text": "audit log table migration done", "origin": "reported", "task_id": null }
+    ],
+    "next": [
+      { "text": "confirm dry-run default and merge", "origin": "inferred", "task_id": null }
+    ],
+    "blockers": [],
+    "task_ids": [],
+    "commitments": [],
+    "notes": "Update opens with a question — not a blocker. Done and next both present. No explicit commitment."
+  },
+  {
+    "id": "upd-044",
+    "raw": "Half done on #3691 — recorded day 1 and day 2 of the real run. Participation was 100% day 1, 75% day 2 (one dev OOO). Three more days to go. No issues so far.",
+    "member_id": "dev-b",
+    "standup_date": "2026-10-29",
+    "source": "synthetic",
+    "done": [
+      { "text": "recorded day 1 and day 2 of 5-day real run", "origin": "reported", "task_id": "3691" }
+    ],
+    "next": [
+      { "text": "continue 5-day real run (days 3-5)", "origin": "inferred", "task_id": "3691" }
+    ],
+    "blockers": [],
+    "task_ids": [
+      { "task_id": "3691", "origin": "reported", "mention": "#3691" }
+    ],
+    "commitments": [],
+    "notes": "Partially done task — not complete yet. Q2 should not fire. Q4 would not fire (recent activity). Participation metric is factual, not a commitment."
+  },
+  {
+    "id": "upd-045",
+    "raw": "Finished the per-task stand-up note writer (W1 in the allow-list). Will do the daily log writer (W2) today. Long term I want the alert writer (W3) done by next Friday.",
+    "member_id": "dev-c",
+    "standup_date": "2026-10-29",
+    "source": "synthetic",
+    "done": [
+      { "text": "per-task stand-up note writer (W1) done", "origin": "reported", "task_id": null }
+    ],
+    "next": [
+      { "text": "implement daily log writer (W2)", "origin": "reported", "task_id": null }
+    ],
+    "blockers": [],
+    "task_ids": [],
+    "commitments": [
+      { "text": "daily log writer (W2) done", "origin": "reported", "due_date": "2026-10-29", "date_type": "implied", "task_id": null },
+      { "text": "alert writer (W3) done", "origin": "reported", "due_date": "2026-11-06", "date_type": "explicit", "task_id": null }
+    ],
+    "notes": "Two commitments: W2 implied (today, no explicit date), W3 explicit (next Friday = 2026-11-06)."
+  },
+  {
+    "id": "upd-046",
+    "raw": "The design sign-off blocker has now been open for 6 stand-ups. I'm going to escalate to Yash today — can't keep working around it. Otherwise continuing on the report template.",
+    "member_id": "dev-a",
+    "standup_date": "2026-10-29",
+    "source": "synthetic",
+    "done": [],
+    "next": [
+      { "text": "escalate design sign-off to Yash", "origin": "reported", "task_id": null },
+      { "text": "continue work on report template", "origin": "reported", "task_id": null }
+    ],
+    "blockers": [
+      { "text": "design sign-off pending — open 6 stand-ups", "origin": "reported", "task_id": null, "owner_id": "dev-yash" }
+    ],
+    "task_ids": [],
+    "commitments": [],
+    "notes": "Long-running blocker (6 stand-ups). Dev self-reporting the age. Owner assigned to Yash via escalation intent."
+  },
+  {
+    "id": "upd-047",
+    "raw": "Sick day, will catch up tomorrow.",
+    "member_id": "dev-b",
+    "standup_date": "2026-10-29",
+    "source": "synthetic",
+    "done": [],
+    "next": [],
+    "blockers": [],
+    "task_ids": [],
+    "commitments": [],
+    "notes": "Sick absence. All arrays empty. Bot sets absent flag. Any open commitments carry to next stand-up."
+  },
+  {
+    "id": "upd-048",
+    "raw": "Finished the runbook first draft — covers add/remove member, rotate keys, and pause the bot. Still working on the 'what to do when the bot is wrong' section, that one needs more thought. Will finish that section by EOD.",
+    "member_id": "dev-c",
+    "standup_date": "2026-10-30",
+    "source": "synthetic",
+    "done": [
+      { "text": "runbook first draft: add/remove member, rotate keys, pause bot sections", "origin": "reported", "task_id": "3702" }
+    ],
+    "next": [
+      { "text": "finish 'what to do when the bot is wrong' section of runbook", "origin": "reported", "task_id": "3702" }
+    ],
+    "blockers": [],
+    "task_ids": [
+      { "task_id": "3702", "origin": "inferred", "mention": "runbook" }
+    ],
+    "commitments": [
+      { "text": "'what to do when the bot is wrong' section done", "origin": "reported", "due_date": "2026-10-30", "date_type": "explicit", "task_id": "3702" }
+    ],
+    "notes": "Partially done — done section and next section refer to the same task. Q2 should not fire (task not fully done). Task id inferred from 'runbook' → SCRUM-043 → 3702."
+  },
+  {
+    "id": "upd-049",
+    "raw": "Merged PR #47 — adds the Teams adapter. It passed the echo bot tests and the sender-id check. Next I'll hook it into the full stand-up lifecycle. Should be end-to-end by Thursday.",
+    "member_id": "dev-a",
+    "standup_date": "2026-10-30",
+    "source": "synthetic",
+    "done": [
+      { "text": "merged Teams adapter (PR #47) — echo bot and sender-id check passing", "origin": "reported", "task_id": null }
+    ],
+    "next": [
+      { "text": "hook Teams adapter into full stand-up lifecycle", "origin": "reported", "task_id": null }
+    ],
+    "blockers": [],
+    "task_ids": [],
+    "commitments": [
+      { "text": "Teams adapter end-to-end in stand-up lifecycle", "origin": "reported", "due_date": "2026-10-29", "date_type": "explicit", "task_id": null }
+    ],
+    "notes": "PR number (#47) is a GitHub PR, not an Odoo task id — do not extract as task_id. Thursday = 2026-10-29."
+  },
+  {
+    "id": "upd-050",
+    "raw": "Yesterday: finished the 2-week pilot report for SCRUM-047 — compared blocker age, commitment met rate, and participation vs the SCRUM-037 baseline. Results are in the doc. Today: present findings to Yash and Saurabh at 3pm. Committed to sending the final report PDF by EOD. No blockers. This feels like a wrap.",
+    "member_id": "dev-b",
+    "standup_date": "2026-11-20",
+    "source": "synthetic",
+    "done": [
+      { "text": "2-week pilot report for SCRUM-047 completed with metrics vs SCRUM-037 baseline", "origin": "reported", "task_id": "3706" }
+    ],
+    "next": [
+      { "text": "present findings to Yash and Saurabh at 3pm", "origin": "reported", "task_id": "3706" }
+    ],
+    "blockers": [],
+    "task_ids": [
+      { "task_id": "3706", "origin": "reported", "mention": "SCRUM-047" }
+    ],
+    "commitments": [
+      { "text": "final report PDF sent by EOD", "origin": "reported", "due_date": "2026-11-20", "date_type": "explicit", "task_id": "3706" }
+    ],
+    "notes": "End-of-project update. All fields populated. 'This feels like a wrap' is sentiment — not a commitment or blocker."
+  }
+]

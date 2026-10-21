@@ -1,0 +1,557 @@
+[
+  {
+    "id": "upd-001",
+    "raw": "Done: finished the extraction prompt v1 and tested it on 5 messages. Next: write the JSON schema and hook it into the parser. No blockers. Committed to having the schema done by EOD today.",
+    "member_id": "dev-a",
+    "standup_date": "2026-10-21",
+    "source": "synthetic",
+    "done": [
+      { "text": "finished extraction prompt v1 and tested on 5 messages", "origin": "reported", "task_id": null }
+    ],
+    "next": [
+      { "text": "write the JSON schema and hook it into the parser", "origin": "reported", "task_id": null }
+    ],
+    "blockers": [],
+    "task_ids": [],
+    "commitments": [
+      { "text": "JSON schema done by EOD", "origin": "reported", "due_date": "2026-10-21", "date_type": "explicit", "task_id": null }
+    ],
+    "notes": "Clean baseline — all fields explicit."
+  },
+  {
+    "id": "upd-002",
+    "raw": "Yesterday I worked on #3668 and #3667. The leakage test is done. Still need to label more examples — probably finish tomorrow. Blocked waiting for Vimal to share the real board messages.",
+    "member_id": "dev-b",
+    "standup_date": "2026-10-21",
+    "source": "synthetic",
+    "done": [
+      { "text": "leakage test done", "origin": "reported", "task_id": "3668" }
+    ],
+    "next": [
+      { "text": "label more examples", "origin": "reported", "task_id": "3667" }
+    ],
+    "blockers": [
+      { "text": "waiting for Vimal to share real board messages", "origin": "reported", "task_id": "3667", "owner_id": "dev-vimal" }
+    ],
+    "task_ids": [
+      { "task_id": "3668", "origin": "reported", "mention": "#3668" },
+      { "task_id": "3667", "origin": "reported", "mention": "#3667" }
+    ],
+    "commitments": [
+      { "text": "finish labelling examples", "origin": "reported", "due_date": "2026-10-22", "date_type": "explicit", "task_id": "3667" }
+    ],
+    "notes": "Two task ids, one blocker with owner, 'tomorrow' resolved to next calendar day."
+  },
+  {
+    "id": "upd-003",
+    "raw": "Nothing new from yesterday, was in meetings all day. Today will try to get the scheduler wired up.",
+    "member_id": "dev-c",
+    "standup_date": "2026-10-21",
+    "source": "synthetic",
+    "done": [],
+    "next": [
+      { "text": "wire up the scheduler", "origin": "reported", "task_id": null }
+    ],
+    "blockers": [],
+    "task_ids": [],
+    "commitments": [
+      { "text": "wire up the scheduler", "origin": "inferred", "due_date": "2026-10-22", "date_type": "implied", "task_id": null }
+    ],
+    "notes": "No done items (meetings). Next item inferred as implied commitment due next stand-up."
+  },
+  {
+    "id": "upd-004",
+    "raw": "Done the auth middleware refactor (#3101). Found a bug in the token refresh path — it's blocking the login flow. I need the API spec from the backend team before I can fix it. Will review PRs today.",
+    "member_id": "dev-a",
+    "standup_date": "2026-10-21",
+    "source": "synthetic",
+    "done": [
+      { "text": "auth middleware refactor", "origin": "reported", "task_id": "3101" }
+    ],
+    "next": [
+      { "text": "review PRs", "origin": "reported", "task_id": null }
+    ],
+    "blockers": [
+      { "text": "need API spec from backend team to fix token refresh bug", "origin": "reported", "task_id": "3101", "owner_id": null }
+    ],
+    "task_ids": [
+      { "task_id": "3101", "origin": "reported", "mention": "#3101" }
+    ],
+    "commitments": [],
+    "notes": "Blocker owner is unknown (backend team not a named individual). No explicit commitment date."
+  },
+  {
+    "id": "upd-005",
+    "raw": "Same as yesterday, still on the dashboard. Should be done Friday.",
+    "member_id": "dev-b",
+    "standup_date": "2026-10-21",
+    "source": "synthetic",
+    "done": [],
+    "next": [
+      { "text": "continue dashboard work", "origin": "inferred", "task_id": null }
+    ],
+    "blockers": [],
+    "task_ids": [],
+    "commitments": [
+      { "text": "dashboard done", "origin": "reported", "due_date": "2026-10-23", "date_type": "explicit", "task_id": null }
+    ],
+    "notes": "Minimal update. Next inferred from 'same as yesterday'. Friday resolved to 2026-10-23. No task id — Q5 should fire."
+  },
+  {
+    "id": "upd-006",
+    "raw": "Finished #3674 and pushed to review. Starting #3679 deadline tracking today. No issues.",
+    "member_id": "dev-c",
+    "standup_date": "2026-10-21",
+    "source": "synthetic",
+    "done": [
+      { "text": "finished and pushed to review", "origin": "reported", "task_id": "3674" }
+    ],
+    "next": [
+      { "text": "start deadline tracking", "origin": "reported", "task_id": "3679" }
+    ],
+    "blockers": [],
+    "task_ids": [
+      { "task_id": "3674", "origin": "reported", "mention": "#3674" },
+      { "task_id": "3679", "origin": "reported", "mention": "#3679" }
+    ],
+    "commitments": [],
+    "notes": "Dev says done on #3674 — Q2 should fire if Odoo still shows In Progress."
+  },
+  {
+    "id": "upd-007",
+    "raw": "Blocked on the Odoo API key — still waiting. Can't make progress on board reads until it's sorted. Nothing else to report.",
+    "member_id": "dev-a",
+    "standup_date": "2026-10-21",
+    "source": "synthetic",
+    "done": [],
+    "next": [],
+    "blockers": [
+      { "text": "waiting for Odoo API key", "origin": "reported", "task_id": null, "owner_id": null }
+    ],
+    "task_ids": [],
+    "commitments": [],
+    "notes": "Pure blocker, no done or next. Owner unknown. Q7 fires day 2 if still open."
+  },
+  {
+    "id": "upd-008",
+    "raw": "Wrapped up the eval harness. Also fixed that HTML escaping bug we discussed. Next I'll write the replay test and the allow-list test — aiming to have both by Wednesday.",
+    "member_id": "dev-b",
+    "standup_date": "2026-10-21",
+    "source": "synthetic",
+    "done": [
+      { "text": "completed eval harness", "origin": "reported", "task_id": null },
+      { "text": "fixed HTML escaping bug", "origin": "reported", "task_id": null }
+    ],
+    "next": [
+      { "text": "write replay test", "origin": "reported", "task_id": null },
+      { "text": "write allow-list test", "origin": "reported", "task_id": null }
+    ],
+    "blockers": [],
+    "task_ids": [],
+    "commitments": [
+      { "text": "replay test and allow-list test done", "origin": "reported", "due_date": "2026-10-21", "date_type": "explicit", "task_id": null }
+    ],
+    "notes": "Two done, two next, one commitment covering both. Wednesday = 2026-10-21."
+  },
+  {
+    "id": "upd-009",
+    "raw": "on leave today",
+    "member_id": "dev-c",
+    "standup_date": "2026-10-21",
+    "source": "synthetic",
+    "done": [],
+    "next": [],
+    "blockers": [],
+    "task_ids": [],
+    "commitments": [],
+    "notes": "Absent / leave. All arrays empty. Bot skips follow-ups for this member today."
+  },
+  {
+    "id": "upd-010",
+    "raw": "Done: reviewed Ritika's PR on the schema (#3668), left comments. Working on the CLI adapter today — trying to get open→collect→close working end to end. If the fake clock works I'll also run the 3-day continuity test. Might need help from Vimal on the Teams spike if we get there.",
+    "member_id": "dev-a",
+    "standup_date": "2026-10-21",
+    "source": "synthetic",
+    "done": [
+      { "text": "reviewed PR on the schema, left comments", "origin": "reported", "task_id": "3668" }
+    ],
+    "next": [
+      { "text": "build CLI adapter open→collect→close end to end", "origin": "reported", "task_id": null },
+      { "text": "run 3-day continuity test with fake clock", "origin": "inferred", "task_id": null }
+    ],
+    "blockers": [],
+    "task_ids": [
+      { "task_id": "3668", "origin": "reported", "mention": "#3668" }
+    ],
+    "commitments": [],
+    "notes": "Conditional next item ('if the fake clock works') inferred — not a firm commitment."
+  },
+  {
+    "id": "upd-011",
+    "raw": "Two blockers today: the staging DB is down so I can't run integration tests, and I'm still waiting on design sign-off for the report layout. Both are blocking #3685. Otherwise done reviewing the gate criteria doc.",
+    "member_id": "dev-b",
+    "standup_date": "2026-10-22",
+    "source": "synthetic",
+    "done": [
+      { "text": "reviewed gate criteria doc", "origin": "reported", "task_id": null }
+    ],
+    "next": [],
+    "blockers": [
+      { "text": "staging DB is down, cannot run integration tests", "origin": "reported", "task_id": "3685", "owner_id": null },
+      { "text": "waiting on design sign-off for report layout", "origin": "reported", "task_id": "3685", "owner_id": null }
+    ],
+    "task_ids": [
+      { "task_id": "3685", "origin": "reported", "mention": "#3685" }
+    ],
+    "commitments": [],
+    "notes": "Multiple blockers on the same task. No next items because blockers prevent progress."
+  },
+  {
+    "id": "upd-012",
+    "raw": "Finished the commitment ledger state machine. I'll get the blocker ledger done too — no hard deadline but want it done before end of week.",
+    "member_id": "dev-c",
+    "standup_date": "2026-10-22",
+    "source": "synthetic",
+    "done": [
+      { "text": "commitment ledger state machine done", "origin": "reported", "task_id": null }
+    ],
+    "next": [
+      { "text": "build blocker ledger", "origin": "reported", "task_id": null }
+    ],
+    "blockers": [],
+    "task_ids": [],
+    "commitments": [
+      { "text": "blocker ledger done before end of week", "origin": "reported", "due_date": "2026-10-23", "date_type": "explicit", "task_id": null }
+    ],
+    "notes": "Soft deadline 'end of week' resolved to 2026-10-23 (Friday). Not truly implied since dev stated it."
+  },
+  {
+    "id": "upd-013",
+    "raw": "Still working on the teams integration spike. Almost there — just need to prove the bot can receive replies without an @mention. Might take the rest of the day.",
+    "member_id": "dev-a",
+    "standup_date": "2026-10-22",
+    "source": "synthetic",
+    "done": [],
+    "next": [
+      { "text": "prove Teams bot can receive replies without @mention", "origin": "reported", "task_id": null }
+    ],
+    "blockers": [],
+    "task_ids": [],
+    "commitments": [],
+    "notes": "No task id given for Teams spike — Q5 should fire. 'Almost there' is not a commitment. No done items."
+  },
+  {
+    "id": "upd-014",
+    "raw": "So yesterday was a bit all over the place honestly. I spent most of the morning trying to debug why the scheduler was firing twice — turned out to be a missing unique key constraint on the standup table. Fixed that. Then in the afternoon I got pulled into a long call. I did manage to sketch out the follow-up engine logic on paper, but nothing committed to code yet. Today I want to actually implement FollowUpEngine.select_triggers() and write a unit test for the 2-per-dev cap. If I have time I'll also look at the report builder template. No blockers right now but I'm a bit worried about the Thursday deadline.",
+    "member_id": "dev-b",
+    "standup_date": "2026-10-22",
+    "source": "synthetic",
+    "done": [
+      { "text": "fixed duplicate scheduler firing (missing unique key on standup table)", "origin": "reported", "task_id": null },
+      { "text": "sketched follow-up engine logic", "origin": "reported", "task_id": null }
+    ],
+    "next": [
+      { "text": "implement FollowUpEngine.select_triggers()", "origin": "reported", "task_id": null },
+      { "text": "write unit test for 2-per-dev cap", "origin": "reported", "task_id": null },
+      { "text": "look at report builder template", "origin": "inferred", "task_id": null }
+    ],
+    "blockers": [],
+    "task_ids": [],
+    "commitments": [],
+    "notes": "Long rambling update. No hard commitment stated despite Thursday concern — not a commitment. Conditional 'if I have time' item marked inferred."
+  },
+  {
+    "id": "upd-015",
+    "raw": "✅ done: schema validation passing on all 10 test cases\n🔜 next: wire the extractor to the CLI adapter\n🚫 blocker: none\n📅 will have extractor wired by noon tomorrow",
+    "member_id": "dev-c",
+    "standup_date": "2026-10-22",
+    "source": "synthetic",
+    "done": [
+      { "text": "schema validation passing on all 10 test cases", "origin": "reported", "task_id": null }
+    ],
+    "next": [
+      { "text": "wire extractor to the CLI adapter", "origin": "reported", "task_id": null }
+    ],
+    "blockers": [],
+    "task_ids": [],
+    "commitments": [
+      { "text": "extractor wired by noon", "origin": "reported", "due_date": "2026-10-23", "date_type": "explicit", "task_id": null }
+    ],
+    "notes": "Emoji-structured update. All fields clearly delimited. Tomorrow noon = 2026-10-23."
+  },
+  {
+    "id": "upd-016",
+    "raw": "Dev date for #3679 is Thursday but the board shows Tuesday. I'll aim for Thursday — please update the board if that's OK.",
+    "member_id": "dev-a",
+    "standup_date": "2026-10-22",
+    "source": "synthetic",
+    "done": [],
+    "next": [
+      { "text": "continue work on #3679 deadline tracking", "origin": "inferred", "task_id": "3679" }
+    ],
+    "blockers": [],
+    "task_ids": [
+      { "task_id": "3679", "origin": "reported", "mention": "#3679" }
+    ],
+    "commitments": [
+      { "text": "complete #3679 by Thursday", "origin": "reported", "due_date": "2026-10-22", "date_type": "explicit", "task_id": "3679" }
+    ],
+    "notes": "Q3 trigger: dev's date (Thursday = 2026-10-22) differs from board date (Tuesday = 2026-10-20). Bot should propose date update pending owner confirmation."
+  },
+  {
+    "id": "upd-017",
+    "raw": "The changes requested on #3118 have been addressed — pushed a new commit. Waiting for re-review. Also started the dry-run logger for Odoo writes.",
+    "member_id": "dev-b",
+    "standup_date": "2026-10-22",
+    "source": "synthetic",
+    "done": [
+      { "text": "addressed changes requested on #3118, pushed new commit", "origin": "reported", "task_id": "3118" },
+      { "text": "started dry-run logger for Odoo writes", "origin": "reported", "task_id": null }
+    ],
+    "next": [
+      { "text": "wait for re-review on #3118", "origin": "inferred", "task_id": "3118" }
+    ],
+    "blockers": [],
+    "task_ids": [
+      { "task_id": "3118", "origin": "reported", "mention": "#3118" }
+    ],
+    "commitments": [],
+    "notes": "Q6 context: board had state=02_changes_requested. Dev responded. Next is inferred (waiting is not actionable but relevant)."
+  },
+  {
+    "id": "upd-018",
+    "raw": "Nothing to report — taking a half day, doctor's appointment this afternoon.",
+    "member_id": "dev-c",
+    "standup_date": "2026-10-22",
+    "source": "synthetic",
+    "done": [],
+    "next": [],
+    "blockers": [],
+    "task_ids": [],
+    "commitments": [],
+    "notes": "Partial day absence. All arrays empty. Bot should set absent flag for the afternoon window."
+  },
+  {
+    "id": "upd-019",
+    "raw": "Completed the write-safety tests for SCRUM-024 — all three scenarios pass: non-listed call raises, non-pinned project raises, replay leaves one note. PR is up.",
+    "member_id": "dev-a",
+    "standup_date": "2026-10-22",
+    "source": "synthetic",
+    "done": [
+      { "text": "write-safety tests: all three scenarios pass", "origin": "reported", "task_id": "3683" }
+    ],
+    "next": [],
+    "blockers": [],
+    "task_ids": [
+      { "task_id": "3683", "origin": "inferred", "mention": "SCRUM-024" }
+    ],
+    "commitments": [],
+    "notes": "Task id inferred from 'SCRUM-024' cross-reference to task 3683. Dev says done — Q2 fires if Odoo not in Review/Done."
+  },
+  {
+    "id": "upd-020",
+    "raw": "Was sick yesterday, back today. Will pick up #3671 continuity test where I left off — day 1 and day 2 are passing, just need day 3. Should finish today.",
+    "member_id": "dev-b",
+    "standup_date": "2026-10-22",
+    "source": "synthetic",
+    "done": [],
+    "next": [
+      { "text": "complete day 3 of continuity test for #3671", "origin": "reported", "task_id": "3671" }
+    ],
+    "blockers": [],
+    "task_ids": [
+      { "task_id": "3671", "origin": "reported", "mention": "#3671" }
+    ],
+    "commitments": [
+      { "text": "continuity test day 3 passing", "origin": "reported", "due_date": "2026-10-22", "date_type": "explicit", "task_id": "3671" }
+    ],
+    "notes": "Return from sick day — no done items. Q4 may fire if task has had no board update for >3 days."
+  },
+  {
+    "id": "upd-021",
+    "raw": "Deployed the CLI adapter to the test environment. Two commits: one for the adapter, one fixing the fake clock drift. Next up is running the 3-day continuity script end to end. I'll have results by EOD. Also need to start on the report builder — that's due next Wednesday.",
+    "member_id": "dev-c",
+    "standup_date": "2026-10-22",
+    "source": "synthetic",
+    "done": [
+      { "text": "deployed CLI adapter to test environment", "origin": "reported", "task_id": null },
+      { "text": "fixed fake clock drift", "origin": "reported", "task_id": null }
+    ],
+    "next": [
+      { "text": "run 3-day continuity script end to end", "origin": "reported", "task_id": null },
+      { "text": "start report builder", "origin": "reported", "task_id": null }
+    ],
+    "blockers": [],
+    "task_ids": [],
+    "commitments": [
+      { "text": "continuity script results", "origin": "reported", "due_date": "2026-10-22", "date_type": "explicit", "task_id": null },
+      { "text": "report builder done", "origin": "reported", "due_date": "2026-10-28", "date_type": "explicit", "task_id": null }
+    ],
+    "notes": "Two commitments with different dates. EOD = today 2026-10-22; next Wednesday = 2026-10-28."
+  },
+  {
+    "id": "upd-022",
+    "raw": "The Odoo API key blocker is resolved — Yash created the scrum-bot user this morning. Starting board reads now. Will have the search_read wrapper done today.",
+    "member_id": "dev-a",
+    "standup_date": "2026-10-22",
+    "source": "synthetic",
+    "done": [],
+    "next": [
+      { "text": "implement search_read wrapper for board reads", "origin": "reported", "task_id": null }
+    ],
+    "blockers": [],
+    "task_ids": [],
+    "commitments": [
+      { "text": "search_read wrapper done", "origin": "reported", "due_date": "2026-10-22", "date_type": "explicit", "task_id": null }
+    ],
+    "notes": "Blocker resolved — was open from upd-007. Bot should close blocker on confirmation. Owner (Yash) is named as resolver."
+  },
+  {
+    "id": "upd-023",
+    "raw": "Yesterday I said I'd finish the replay test by EOD but I didn't. Had a production issue on another project that took the afternoon. Will definitely finish it today — nothing else on my plate.",
+    "member_id": "dev-b",
+    "standup_date": "2026-10-22",
+    "source": "synthetic",
+    "done": [],
+    "next": [
+      { "text": "finish replay test", "origin": "reported", "task_id": null }
+    ],
+    "blockers": [],
+    "task_ids": [],
+    "commitments": [
+      { "text": "replay test done", "origin": "reported", "due_date": "2026-10-22", "date_type": "explicit", "task_id": null }
+    ],
+    "notes": "Carried-forward commitment — dev explicitly acknowledges missing yesterday's promise and re-commits. Prior commitment should be marked missed and a new one recorded."
+  },
+  {
+    "id": "upd-024",
+    "raw": "All good. On track.",
+    "member_id": "dev-c",
+    "standup_date": "2026-10-22",
+    "source": "synthetic",
+    "done": [],
+    "next": [],
+    "blockers": [],
+    "task_ids": [],
+    "commitments": [],
+    "notes": "Minimal non-informative update. All arrays empty. Q4 should fire on any tasks with no recent board activity."
+  },
+  {
+    "id": "upd-025",
+    "raw": "Picked up the identity mapping work from Vimal since he's OOO. Updated the config YAML with Teams user ids for all four team members. Cross-checked against Odoo res.users. Looks good. Vimal can review when he's back.",
+    "member_id": "dev-a",
+    "standup_date": "2026-10-23",
+    "source": "synthetic",
+    "done": [
+      { "text": "updated config YAML with Teams user ids for all four members", "origin": "reported", "task_id": null },
+      { "text": "cross-checked Teams ids against Odoo res.users", "origin": "reported", "task_id": null }
+    ],
+    "next": [],
+    "blockers": [],
+    "task_ids": [],
+    "commitments": [],
+    "notes": "Dev took over another member's task. No task id given — Q5 may fire. No blockers or commitments."
+  },
+  {
+    "id": "upd-026",
+    "raw": "Finished labelling the last 10 examples. That's 30 in dev/ done. Starting to seal held-out today — will have 20 moved and tagged heldout-v1 by end of day.",
+    "member_id": "dev-b",
+    "standup_date": "2026-10-23",
+    "source": "synthetic",
+    "done": [
+      { "text": "labelled last 10 examples, 30 in dev/ done", "origin": "reported", "task_id": "3667" }
+    ],
+    "next": [
+      { "text": "seal 20 held-out examples and push heldout-v1 tag", "origin": "reported", "task_id": "3667" }
+    ],
+    "blockers": [],
+    "task_ids": [
+      { "task_id": "3667", "origin": "inferred", "mention": "held-out" }
+    ],
+    "commitments": [
+      { "text": "heldout-v1 tagged by EOD", "origin": "reported", "due_date": "2026-10-23", "date_type": "explicit", "task_id": "3667" }
+    ],
+    "notes": "Task id inferred from context (labelling work = SCRUM-008 = task 3667)."
+  },
+  {
+    "id": "upd-027",
+    "raw": "The gate for phase 0 is failing — continuity test panics on day 3 because the commitment carry-forward logic looks in the wrong table column. Found the bug, fixing now. Should be green in an hour.",
+    "member_id": "dev-c",
+    "standup_date": "2026-10-23",
+    "source": "synthetic",
+    "done": [
+      { "text": "identified bug in commitment carry-forward logic (wrong table column)", "origin": "reported", "task_id": "3673" }
+    ],
+    "next": [
+      { "text": "fix carry-forward bug and get continuity test green", "origin": "reported", "task_id": "3673" }
+    ],
+    "blockers": [],
+    "task_ids": [
+      { "task_id": "3673", "origin": "inferred", "mention": "gate for phase 0" }
+    ],
+    "commitments": [
+      { "text": "continuity test green", "origin": "reported", "due_date": "2026-10-23", "date_type": "explicit", "task_id": "3673" }
+    ],
+    "notes": "Task id inferred from 'phase 0 gate' → SCRUM-014 → task 3673. Commitment is same-day with 'in an hour' phrasing."
+  },
+  {
+    "id": "upd-028",
+    "raw": "Done: concept primer first draft written for SCRUM-015. Next: share it with Yash for review. One concern — the 'AI interprets, code enforces' section might be too long for the coach page. Not a blocker but flagging it.",
+    "member_id": "dev-a",
+    "standup_date": "2026-10-23",
+    "source": "synthetic",
+    "done": [
+      { "text": "concept primer first draft for SCRUM-015", "origin": "reported", "task_id": "3674" }
+    ],
+    "next": [
+      { "text": "share primer with Yash for review", "origin": "reported", "task_id": "3674" }
+    ],
+    "blockers": [],
+    "task_ids": [
+      { "task_id": "3674", "origin": "inferred", "mention": "SCRUM-015" }
+    ],
+    "commitments": [],
+    "notes": "Concern flagged but explicitly marked 'not a blocker' — should not be extracted as a blocker. Task id inferred from SCRUM-015 → 3674."
+  },
+  {
+    "id": "upd-029",
+    "raw": "The promise I made Monday to have the extraction schema done is now complete — merged to dev branch. Gate test is passing. Moving on to the CLI adapter integration.",
+    "member_id": "dev-b",
+    "standup_date": "2026-10-23",
+    "source": "synthetic",
+    "done": [
+      { "text": "extraction schema merged to dev branch", "origin": "reported", "task_id": null },
+      { "text": "gate test passing", "origin": "reported", "task_id": null }
+    ],
+    "next": [
+      { "text": "CLI adapter integration", "origin": "reported", "task_id": null }
+    ],
+    "blockers": [],
+    "task_ids": [],
+    "commitments": [],
+    "notes": "Dev explicitly closes a prior commitment. Prior commitment should be marked met. No new commitment stated."
+  },
+  {
+    "id": "upd-030",
+    "raw": "Had a productive day. Finished #3671 continuity test — all three days green. Also helped Ritika debug the leakage test hash mismatch. Next I'll start the Teams echo bot spike. I want that proof-of-concept done by Thursday so we can do the go/no-go call Friday.",
+    "member_id": "dev-c",
+    "standup_date": "2026-10-23",
+    "source": "synthetic",
+    "done": [
+      { "text": "continuity test all three days green", "origin": "reported", "task_id": "3671" },
+      { "text": "helped debug leakage test hash mismatch", "origin": "reported", "task_id": "3668" }
+    ],
+    "next": [
+      { "text": "start Teams echo bot spike", "origin": "reported", "task_id": null }
+    ],
+    "blockers": [],
+    "task_ids": [
+      { "task_id": "3671", "origin": "reported", "mention": "#3671" },
+      { "task_id": "3668", "origin": "inferred", "mention": "leakage test" }
+    ],
+    "commitments": [
+      { "text": "Teams echo bot proof-of-concept done", "origin": "reported", "due_date": "2026-10-22", "date_type": "explicit", "task_id": null }
+    ],
+    "notes": "Task 3668 inferred from 'leakage test'. Dev says done on #3671 — Q2 fires if Odoo not in Review/Done. Thursday = 2026-10-22."
+  }
+]

@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "update",
+  "title": "Stand-up Update",
+  "description": "Labelled extraction of one developer's stand-up message.",
+  "type": "object",
+  "required": ["id", "raw", "member_id", "standup_date", "done", "next", "blockers", "task_ids", "commitments"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique id for this labelled example, e.g. upd-001"
+    },
+    "raw": {
+      "type": "string",
+      "description": "Verbatim stand-up message exactly as the developer sent it"
+    },
+    "member_id": {
+      "type": "string",
+      "description": "Developer identifier (use anonymised handle for eval set, e.g. dev-a)"
+    },
+    "standup_date": {
+      "type": "string",
+      "format": "date",
+      "description": "ISO date of the stand-up, e.g. 2026-10-21"
+    },
+    "source": {
+      "type": "string",
+      "enum": ["real", "synthetic"],
+      "description": "Whether this update is from a real board or hand-written for coverage"
+    },
+    "done": {
+      "type": "array",
+      "description": "Things the developer completed since the last stand-up",
+      "items": { "$ref": "#/$defs/labelled_item" }
+    },
+    "next": {
+      "type": "array",
+      "description": "Things the developer plans to do today or next",
+      "items": { "$ref": "#/$defs/labelled_item" }
+    },
+    "blockers": {
+      "type": "array",
+      "description": "Impediments mentioned; empty array if none",
+      "items": { "$ref": "#/$defs/blocker_item" }
+    },
+    "task_ids": {
+      "type": "array",
+      "description": "Odoo task ids explicitly or implicitly referenced",
+      "items": { "$ref": "#/$defs/task_ref" }
+    },
+    "commitments": {
+      "type": "array",
+      "description": "Explicit promises with a date; empty array if none",
+      "items": { "$ref": "#/$defs/commitment_item" }
+    },
+    "notes": {
+      "type": "string",
+      "description": "Labeller notes — edge cases, ambiguity, why a field was inferred"
+    }
+  },
+  "$defs": {
+    "origin": {
+      "type": "string",
+      "enum": ["reported", "inferred"],
+      "description": "reported = developer said it explicitly; inferred = derived from context"
+    },
+    "labelled_item": {
+      "type": "object",
+      "required": ["text", "origin"],
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Normalised description of the item"
+        },
+        "origin": { "$ref": "#/$defs/origin" },
+        "task_id": {
+          "type": ["string", "null"],
+          "description": "Odoo task id this item relates to, if known"
+        }
+      }
+    },
+    "blocker_item": {
+      "type": "object",
+      "required": ["text", "origin"],
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Description of the blocker"
+        },
+        "origin": { "$ref": "#/$defs/origin" },
+        "task_id": {
+          "type": ["string", "null"],
+          "description": "Odoo task id this blocker is linked to"
+        },
+        "owner_id": {
+          "type": ["string", "null"],
+          "description": "Who is responsible for unblocking; null if unknown"
+        }
+      }
+    },
+    "task_ref": {
+      "type": "object",
+      "required": ["task_id", "origin"],
+      "additionalProperties": false,
+      "properties": {
+        "task_id": {
+          "type": "string",
+          "description": "Odoo task id as a string"
+        },
+        "origin": { "$ref": "#/$defs/origin" },
+        "mention": {
+          "type": "string",
+          "description": "Exact text the developer used to reference this task, e.g. '#142' or 'the auth task'"
+        }
+      }
+    },
+    "commitment_item": {
+      "type": "object",
+      "required": ["text", "origin", "due_date", "date_type"],
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "What was promised"
+        },
+        "origin": { "$ref": "#/$defs/origin" },
+        "due_date": {
+          "type": ["string", "null"],
+          "format": "date",
+          "description": "ISO date the commitment is due; null only if date_type is implied and no next stand-up date is known"
+        },
+        "date_type": {
+          "type": "string",
+          "enum": ["explicit", "implied"],
+          "description": "explicit = developer stated a date; implied = due next stand-up by default rule"
+        },
+        "task_id": {
+          "type": ["string", "null"],
+          "description": "Odoo task id this commitment is tied to"
+        }
+      }
+    }
+  }
+}
