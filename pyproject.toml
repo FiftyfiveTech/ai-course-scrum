@@ -1,7 +1,7 @@
 [project]
 name = "ai-course-track"
 version = "0.1.0"
-description = "<TRACK> — FiftyFive AI engineering course"
+description = "AI Scrum Master — a Teams-managed bot that runs the daily stand-up and writes back to Odoo"
 requires-python = ">=3.10"
 dependencies = [
     "groq>=0.11",
