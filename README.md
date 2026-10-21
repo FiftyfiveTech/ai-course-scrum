@@ -36,6 +36,15 @@ Two files are absent because they are Week 0 tasks, not scaffolding:
 
 Write them. Do not import them from somewhere else.
 
+## Held-out eval set
+
+| File | sha256 |
+|---|---|
+| `evals/heldout/updates.json` | `e29b910154053a5ff0ba974dc2a4ab281bd006ff1c29626142c847646d6ba3d0` |
+
+Sealed 2026-10-21. Tagged `heldout-v1`. The Builder never reads `evals/heldout/`.
+Verify integrity: `sha256sum evals/heldout/updates.json`
+
 ## Rules that live in this repo
 
 `CLAUDE.md` carries the full contract. The short version:

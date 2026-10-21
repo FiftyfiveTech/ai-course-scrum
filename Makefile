@@ -14,15 +14,15 @@ setup:
 	@echo "ok. next: make test"
 
 test:
-	uv run pytest tests -q --ignore=tests/gates
+	.venv/bin/pytest tests -q --ignore=tests/gates
 
 gate:
 	@test -n "$$(ls tests/gates/*.py 2>/dev/null)" || { echo "no gates written yet — see tests/gates/README.md"; exit 1; }
-	uv run pytest tests/gates -q
+	.venv/bin/pytest tests/gates -q
 
 demo:
-	@echo "not implemented yet. make demo must run the system end to end from a clean clone."
-	@exit 1
+	@test -n "$(GROQ_API_KEY)" || { echo "GROQ_API_KEY not set — export it from ~/.config/ before running make demo"; exit 1; }
+	PYTHONPATH=. .venv/bin/python -m src.demo
 
 clean:
 	rm -rf .venv .pytest_cache **/__pycache__
