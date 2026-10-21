@@ -55,3 +55,14 @@ Verify integrity: `sha256sum evals/heldout/updates.json`
 - Every PR is reviewed by the other person. `main` is protected; self-merges are the one thing
   the Friday retro always checks.
 - Tasks come from the Odoo board via the `odoo-board` MCP server, not from this README.
+
+## Branch and PR workflow
+
+1. **Code goes to `dev` first.** Branch from `dev`, open the PR against `dev`, and promote `dev`
+   to `main` only after review. Nothing is merged straight into `main`.
+2. **PRs are opened with the `pr-dev` skill** ([`.claude/skills/pr-dev`](.claude/skills/pr-dev/SKILL.md)).
+   In Claude Code, run `/pr-dev`: it checks the branch, runs the tests and gate, pushes, and opens
+   the PR with `dev` as the base, so no PR goes to `main` by accident.
+3. **For now, the Odoo board is empty.** Checks that depend on it — the `odoo-board` MCP calls,
+   and the Odoo lines in `make doctor` — are expected to fail, and those failures are accepted
+   until the board is populated. Every other test and gate must still pass.
