@@ -46,3 +46,13 @@ Write them. Do not import them from somewhere else.
 - Every PR is reviewed by the other person. `main` is protected; self-merges are the one thing
   the Friday retro always checks.
 - Tasks come from the Odoo board via the `odoo-board` MCP server, not from this README.
+
+## Odoo board
+
+This repo's board is Odoo **project 88** — *SCRUM — AI Scrum Master* (Done stage `2210`).
+`.mcp.json` pins the `odoo-board` server to it with `ODOO_PROJECT_ID=88`; the server reaches no
+other project. It runs the Node server from the course kit, so each person needs:
+
+- Node, and the course kit at `~/.local/share/ai-course-kit` with `AI_COURSE_KIT` pointing at its
+  `board-mcp/` folder.
+- `ODOO_USER` and `ODOO_KEY` in `~/.config/ai-course-board.env` (never in the repo).
