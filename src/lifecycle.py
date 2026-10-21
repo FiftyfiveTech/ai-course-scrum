@@ -18,6 +18,7 @@ from datetime import date
 from functools import partial
 from typing import Any, Callable
 
+import src.commitment as commitment_ledger
 from src.adapters import Message
 from src.adapters.cli import ScriptedCLIAdapter
 
@@ -106,6 +107,20 @@ class StandUpLifecycle:
                         f"Should it move to Review?",
                     ))
 
+            # Q-commit — open commitment from a prior day, not yet met
+            for comm in commitment_ledger.get_overdue(
+                self.db, member_id, self._standup_date
+            ):
+                # Skip if this commitment was recorded in today's standup
+                if comm["standup_id"] == self.standup_id:
+                    continue
+                questions.append((
+                    "Q-commit",
+                    f"You committed to \"{comm['description']}\" "
+                    f"(due {comm['due_date'] or 'next stand-up'}). "
+                    f"What's the status?",
+                ))
+
             for rule, question_text in questions[:2]:  # cap at 2 per member
                 self.adapter.post_private(member_id, question_text)
                 self.db.execute(
@@ -187,6 +202,12 @@ class StandUpLifecycle:
             ),
         )
         self.db.commit()
+
+        # Record new commitments and mark prior ones met if mentioned today
+        commitment_ledger.record_from_extraction(
+            self.db, self.standup_id, member_id, extraction_json
+        )
+        commitment_ledger.mark_met_if_mentioned(self.db, member_id, extraction_json)
 
     def _set_state(self, state: str) -> None:
         self.db.execute(

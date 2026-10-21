@@ -8,6 +8,8 @@ from __future__ import annotations
 import json
 import sqlite3
 
+import src.commitment as commitment_ledger
+
 
 def build_report(db: sqlite3.Connection, standup_id: int) -> str:
     standup = db.execute(
@@ -72,6 +74,27 @@ def build_report(db: sqlite3.Connection, standup_id: int) -> str:
                 due = f"  due {item['due_date']}" if item.get("due_date") else ""
                 lines.append(
                     f"       • {item['text']}{due}  [{item['date_type']}]"
+                )
+
+    # Carried-forward commitments — open from prior stand-ups
+    all_members = [row["member_id"] for row in updates]
+    carried: dict[str, list] = {}
+    for member_id in all_members:
+        open_comms = [
+            c for c in commitment_ledger.get_all_open(db, member_id)
+            if c["standup_id"] != standup_id
+        ]
+        if open_comms:
+            carried[member_id] = open_comms
+
+    if carried:
+        lines.append(f"\n  ── CARRIED FORWARD ──")
+        for member_id, comms in carried.items():
+            for c in comms:
+                due = f"  due {c['due_date']}" if c["due_date"] else ""
+                lines.append(
+                    f"    [{member_id}] {c['description']}{due}"
+                    f"  (committed {c['committed_on']})"
                 )
 
     if follow_ups:

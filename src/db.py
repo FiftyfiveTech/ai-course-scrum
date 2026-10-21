@@ -45,6 +45,17 @@ CREATE TABLE IF NOT EXISTS follow_up_question (
     answer_text   TEXT
 );
 
+CREATE TABLE IF NOT EXISTS commitment (
+    id               INTEGER  PRIMARY KEY AUTOINCREMENT,
+    standup_id       INTEGER  NOT NULL REFERENCES standup(id),
+    member_id        TEXT     NOT NULL,
+    description      TEXT     NOT NULL,
+    due_date         DATE,
+    date_type        TEXT     NOT NULL DEFAULT 'implied',
+    state            TEXT     NOT NULL DEFAULT 'pending',
+    state_changed_at DATETIME
+);
+
 CREATE TABLE IF NOT EXISTS blocker (
     id           INTEGER  PRIMARY KEY AUTOINCREMENT,
     standup_id   INTEGER  NOT NULL REFERENCES standup(id),
