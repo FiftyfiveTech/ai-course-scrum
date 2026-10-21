@@ -40,7 +40,7 @@ imports from an adapter. Adapters depend on the core, not on each other.
     │   Chat Adapter  │    │    Odoo Adapter      │
     │                 │    │                      │
     │  - CLI (test)   │    │  XML-RPC client      │
-    │  - Teams (live) │    │  odoo.fiftyfivetech  │
+    │  - Teams (live) │    │  ODOO_URL: sandbox   │
     └─────────────────┘    └──────────────────────┘
 ```
 
@@ -75,6 +75,18 @@ channel thread per stand-up — added in week 2 if B1 is unblocked).
 
 Thin XML-RPC wrapper over `execute_kw`. All business logic stays in the core.
 The adapter exposes typed read methods and a single `write(call: AllowedCall)` entry point.
+
+**Target.** The adapter connects to whatever the `ODOO_*` settings name (`ODOO_URL`, `ODOO_DB`,
+`ODOO_LOGIN`, `ODOO_API_KEY`). In development that is the local **sandbox**: Odoo in Docker on
+`127.0.0.1:8069`, seeded with the `scrum-bot` user and a project shaped like the pilot boards
+(`sandbox/odoo/`, `make sandbox-up`; settings in `sandbox/odoo/sandbox.env`). Tests and demos of
+Odoo features run there, and `make test-sandbox` checks them. Pointing the adapter at the live
+tenant (`odoo.fiftyfivetech.io`) is a configuration change for the pilot, not something done
+during development.
+
+The adapter never targets the **course board** (the AI Dev Learning project), even though it
+lives on the same tenant. That board tracks our own tickets through the `odoo-board` MCP server
+and is not part of the product. See the README, "Odoo: two roles, two instances".
 
 ---
 
@@ -276,7 +288,7 @@ list raises `ProjectNotPinnedError`.
 
 | Control | Detail |
 |---|---|
-| **Bot user** | `scrum-bot` Odoo user; Project: User rights only; member of pilot boards only. Never the tenant admin key. |
+| **Bot user** | `scrum-bot` Odoo user; Project: User rights only; member of pilot boards only. Never the tenant admin key. In development, the sandbox seeds a `scrum-bot` with the same rights. |
 | **Code allow-list** | `OdooWriter.write(call)` checks `call.method` and `call.project_id` before every call |
 | **Model never picks a write** | Model fills text fields only. Code decides whether and where to write. |
 | **Dry-run switch** | `ODOO_WRITE=off\|dry\|on`. Default: `dry`. Flip to `on` only after supervisor sign-off in week 3. |
@@ -294,6 +306,12 @@ list raises `ProjectNotPinnedError`.
 - **`<br/>` normalisation:** Odoo normalises to `<br>`. Never patch text by matching markup.
 - **`state` not `kanban_state`:** Odoo 19 removed `kanban_state`. Use `state`:
   `01_in_progress`, `02_changes_requested`, `03_approved`, `1_done`, `1_canceled`.
+- **Sandbox version:** the sandbox runs `odoo:17.0`, but the live tenant is Odoo 19 (see the
+  previous trap). Anything that depends on version-specific fields like `state` must be checked
+  against 19 before the pilot. Until the sandbox image matches, a sandbox pass is not proof of
+  19 behaviour.
+- **Sender email:** `message_post` fails ("please configure the sender's email address") when
+  the posting user has no email. The live `scrum-bot` needs one, like the sandbox's.
 
 ---
 
