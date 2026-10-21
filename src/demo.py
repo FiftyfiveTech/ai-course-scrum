@@ -15,7 +15,7 @@ from datetime import datetime, timezone
 
 from src.adapters.cli import ScriptedCLIAdapter
 from src.clock import FakeClock
-from src.db import connect
+from src.db import add_team, connect
 from src.extractor import extract
 from src.lifecycle import StandUpLifecycle
 from src.report import build_report
@@ -56,6 +56,7 @@ SCRIPTS: dict[str, list[str]] = {
 def main() -> None:
     clock = FakeClock(start=datetime(2026, 10, 21, 9, 0, 0, tzinfo=timezone.utc))
     db = connect(":memory:")
+    add_team(db, TEAM_ID, "Demo team", "Asia/Kolkata")
     adapter = ScriptedCLIAdapter(scripts=SCRIPTS, clock=clock)
 
     lifecycle = StandUpLifecycle(

@@ -27,7 +27,7 @@ from schemas.update import (
 )
 from src.adapters.cli import ScriptedCLIAdapter
 from src.clock import FakeClock
-from src.db import connect
+from src.db import add_team, connect
 from src.lifecycle import StandUpLifecycle
 from src.report import build_report
 
@@ -78,6 +78,7 @@ def _run_day(
 def test_continuity():
     clock = FakeClock(start=datetime(2026, 10, 21, 9, 0, tzinfo=timezone.utc))
     db = connect(":memory:")
+    add_team(db, "test-team", "Test team", "Asia/Kolkata")
 
     # ── Day 1: dev-a commits to finishing the schema by EOD ──────────────
     _run_day(

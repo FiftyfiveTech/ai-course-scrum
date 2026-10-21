@@ -3,6 +3,9 @@ Commitment ledger.
 
 Records commitments from extractions, marks them met when mentioned in done
 items, and surfaces overdue open ones for Q-commit follow-up questions.
+
+commitment_history is append-only: a state change inserts a new row, and the
+current state is read from the commitment_current view (latest row wins).
 """
 
 from __future__ import annotations
@@ -29,12 +32,13 @@ def record_from_extraction(
     data = json.loads(extraction_json)
     for item in data.get("commitments", []):
         db.execute(
-            """INSERT INTO commitment
-               (standup_id, member_id, description, due_date, date_type, state)
-               VALUES (?, ?, ?, ?, ?, 'pending')""",
+            """INSERT INTO commitment_history
+               (standup_id, member_id, task_id, description, due_date, date_type, state)
+               VALUES (?, ?, ?, ?, ?, ?, 'pending')""",
             (
                 standup_id,
                 member_id,
+                item.get("task_id"),
                 item["text"],
                 item.get("due_date"),
                 item.get("date_type", "implied"),
@@ -45,12 +49,13 @@ def record_from_extraction(
 
 def mark_met_if_mentioned(
     db: sqlite3.Connection,
+    standup_id: int,
     member_id: str,
     extraction_json: str | None,
 ) -> None:
     """
     If today's done items overlap significantly with an open commitment,
-    mark that commitment as met.
+    append a 'met' row for that commitment in this stand-up.
     Overlap threshold: ≥2 non-stop-word tokens in common.
     """
     if not extraction_json or extraction_json == "FAILED":
@@ -61,7 +66,7 @@ def mark_met_if_mentioned(
         return
 
     pending = db.execute(
-        "SELECT id, description FROM commitment WHERE member_id = ? AND state = 'pending'",
+        "SELECT * FROM commitment_current WHERE member_id = ? AND state = 'pending'",
         (member_id,),
     ).fetchall()
 
@@ -74,8 +79,17 @@ def mark_met_if_mentioned(
             done_words = set(done_text.split())
             if len(comm_words & done_words) >= 2:
                 db.execute(
-                    "UPDATE commitment SET state = 'met' WHERE id = ?",
-                    (comm["id"],),
+                    """INSERT INTO commitment_history
+                       (standup_id, member_id, task_id, description, due_date, date_type, state)
+                       VALUES (?, ?, ?, ?, ?, ?, 'met')""",
+                    (
+                        standup_id,
+                        member_id,
+                        comm["task_id"],
+                        comm["description"],
+                        comm["due_date"],
+                        comm["date_type"],
+                    ),
                 )
                 break
     db.commit()
@@ -91,7 +105,7 @@ def get_overdue(
     These are the candidates for a Q-commit follow-up question.
     """
     return db.execute(
-        """SELECT * FROM commitment
+        """SELECT * FROM commitment_current
            WHERE member_id = ? AND state = 'pending'
              AND (due_date IS NULL OR due_date <= ?)
            ORDER BY due_date""",
@@ -106,8 +120,8 @@ def get_all_open(
     """Return all pending commitments for a member regardless of date."""
     return db.execute(
         """SELECT c.*, s.date AS committed_on
-           FROM commitment c
-           JOIN standup s ON c.standup_id = s.id
+           FROM commitment_current c
+           JOIN standup s ON c.first_standup_id = s.id
            WHERE c.member_id = ? AND c.state = 'pending'
            ORDER BY c.due_date""",
         (member_id,),
