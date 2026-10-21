@@ -95,7 +95,8 @@ def check_odoo(env: Mapping[str, str], common: OdooCommon = _odoo_common) -> Res
         return Result(name, False, f"authenticate failed: {_error(exc)}")
     if not uid:
         return Result(name, False, f"login {env['ODOO_LOGIN']!r} rejected")
-    return Result(name, True, f"authenticated as {env['ODOO_LOGIN']!r} (uid {uid})")
+    # The URL is in the line so a sandbox PASS cannot be read as a course-board PASS.
+    return Result(name, True, f"authenticated as {env['ODOO_LOGIN']!r} (uid {uid}) on {env['ODOO_URL']}")
 
 
 def check_odoo_write(env: Mapping[str, str]) -> Result:

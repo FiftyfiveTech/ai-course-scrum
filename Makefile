@@ -1,4 +1,4 @@
-.PHONY: setup test gate demo doctor clean
+.PHONY: setup test gate demo doctor sandbox-up sandbox-down doctor-sandbox clean
 .DEFAULT_GOAL := help
 
 # .venv/bin on Linux/macOS, .venv/Scripts on Windows.
@@ -11,6 +11,9 @@ help:
 	@echo "make gate    run every phase gate in tests/gates/"
 	@echo "make demo    run the thing end to end"
 	@echo "make doctor  PASS/FAIL per external dependency; non-zero exit on any FAIL"
+	@echo "make sandbox-up       local Odoo in Docker on localhost:8069, seeded (sandbox/odoo/)"
+	@echo "make doctor-sandbox   make doctor with the Odoo settings pointed at the sandbox"
+	@echo "make sandbox-down     stop the sandbox (add WIPE=1 to delete its data)"
 
 setup:
 	@command -v uv >/dev/null || { echo "uv not installed: curl -LsSf https://astral.sh/uv/install.sh | sh"; exit 1; }
@@ -35,6 +38,24 @@ demo:
 doctor:
 	$(NEED_VENV)
 	PYTHONPATH=. $(PYTHON) -m src.doctor
+
+SANDBOX = docker compose -f sandbox/odoo/docker-compose.yml
+
+# Local Odoo for testing Odoo code. It is not the course board: a result here is not gate evidence.
+sandbox-up:
+	$(NEED_VENV)
+	$(SANDBOX) up -d db
+	$(SANDBOX) run --rm odoo odoo --database sandbox --init project --without-demo all --stop-after-init
+	$(SANDBOX) up -d odoo
+	$(PYTHON) sandbox/odoo/seed.py
+
+sandbox-down:
+	$(SANDBOX) down $(if $(WIPE),--volumes)
+
+# Sandbox Odoo values override for this one command; Groq and Teams still come from your env files.
+doctor-sandbox:
+	$(NEED_VENV)
+	set -a && . sandbox/odoo/sandbox.env && set +a && PYTHONPATH=. $(PYTHON) -m src.doctor
 
 clean:
 	rm -rf .venv .pytest_cache **/__pycache__

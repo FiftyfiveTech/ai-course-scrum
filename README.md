@@ -70,3 +70,14 @@ Verify integrity: `sha256sum evals/heldout/updates.json`
 3. **For now, the Odoo board is empty.** Checks that depend on it — the `odoo-board` MCP calls,
    and the Odoo lines in `make doctor` — are expected to fail, and those failures are accepted
    until the board is populated. Every other test and gate must still pass.
+
+## Local Odoo sandbox
+
+`make sandbox-up` starts Odoo 17 in Docker on `localhost:8069` (sandbox/odoo/) and seeds a
+`scrum-bot` user and an "AI Dev Learning (sandbox)" project with the course board's stage names.
+`make doctor-sandbox` runs the doctor with the Odoo settings pointed at it; `make sandbox-down`
+stops it (`WIPE=1` deletes its data).
+
+It exists to exercise Odoo code without touching the course board. A PASS against
+`localhost:8069` is not gate evidence, and nothing here moves a course-board ticket: only the
+supervisor sets Done.

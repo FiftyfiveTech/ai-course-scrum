@@ -67,6 +67,7 @@ def test_all_good_prints_pass_per_dependency_and_exits_zero(capsys):
     out = capsys.readouterr().out
     assert verdicts(out) == ["PASS"] * 4
     assert "4/4 passed" in out
+    assert "on https://odoo.example" in out  # a sandbox PASS must not read as a board PASS
 
 
 def test_empty_env_fails_every_check_and_exits_nonzero(capsys):
