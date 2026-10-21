@@ -1,18 +1,22 @@
-# ai-course-template
+# AI Scrum Master
 
-Starting scaffold for the FiftyFive AI engineering course. One repo per track, grown phase by
-phase by hand.
+A Teams-managed bot that runs the team's daily stand-up. It opens and closes the stand-up on a
+schedule, extracts each developer's update into a validated schema, tracks commitments and
+blockers, asks rule-based follow-ups, builds the daily report, and writes back to Odoo through an
+allow-listed, dry-run-by-default writer. The core is platform-agnostic: Microsoft Teams is the
+live chat adapter, the CLI adapter (with a fake clock) drives tests and the demo. See
+[`ARCHITECTURE.md`](ARCHITECTURE.md).
+
+Built by hand, phase by phase, as the scrum track of the FiftyFive AI engineering course.
 
 ## Use it
 
 ```bash
-gh repo create FiftyfiveTech/ai-course-<track> --template FiftyfiveTech/ai-course-template --public --clone
-cd ai-course-<track>
+git clone https://github.com/FiftyfiveTech/ai-course-scrum.git
+cd ai-course-scrum
 make setup
+make demo
 ```
-
-Then, in order: replace `<TRACK>` in `CLAUDE.md` and `pyproject.toml`, protect `main`, add the
-other person as a collaborator with push access.
 
 ## Layout
 
@@ -55,3 +59,14 @@ Verify integrity: `sha256sum evals/heldout/updates.json`
 - Every PR is reviewed by the other person. `main` is protected; self-merges are the one thing
   the Friday retro always checks.
 - Tasks come from the Odoo board via the `odoo-board` MCP server, not from this README.
+
+## Branch and PR workflow
+
+1. **Code goes to `dev` first.** Branch from `dev`, open the PR against `dev`, and promote `dev`
+   to `main` only after review. Nothing is merged straight into `main`.
+2. **PRs are opened with the `pr-dev` skill** ([`.claude/skills/pr-dev`](.claude/skills/pr-dev/SKILL.md)).
+   In Claude Code, run `/pr-dev`: it checks the branch, runs the tests and gate, pushes, and opens
+   the PR with `dev` as the base, so no PR goes to `main` by accident.
+3. **For now, the Odoo board is empty.** Checks that depend on it — the `odoo-board` MCP calls,
+   and the Odoo lines in `make doctor` — are expected to fail, and those failures are accepted
+   until the board is populated. Every other test and gate must still pass.
