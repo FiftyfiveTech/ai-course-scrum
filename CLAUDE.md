@@ -1,4 +1,4 @@
-# <TRACK> — AI Engineering Course
+# AI Scrum Master (Teams-managed bot) — AI Engineering Course
 
 Hand-built. The point is that we build it, so **never** generate a whole phase in one shot,
 and never inherit code you cannot explain.
