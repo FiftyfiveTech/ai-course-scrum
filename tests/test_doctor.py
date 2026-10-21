@@ -146,6 +146,27 @@ def test_secrets_never_appear_in_output():
         assert s not in text
 
 
+def test_real_transport_sends_its_own_user_agent(monkeypatch):
+    # Groq's Cloudflare rejects urllib's default User-Agent with 403 / error 1010.
+    seen = {}
+
+    class Resp:
+        def __enter__(self):
+            return self
+        def __exit__(self, *a):
+            return False
+        def read(self, *a):
+            return b"{}"
+
+    def fake_urlopen(req, timeout):
+        seen.update(req.header_items())
+        return Resp()
+
+    monkeypatch.setattr(doctor.urllib.request, "urlopen", fake_urlopen)
+    doctor._http("GET", doctor.GROQ_MODELS_URL, {"Authorization": "Bearer x"}, None)
+    assert seen["User-agent"] == doctor.USER_AGENT
+
+
 # ── a silent skip is a FAIL ─────────────────────────────────────────────────
 
 CONFTEST = (Path(__file__).parent / "conftest.py").read_text(encoding="utf-8")

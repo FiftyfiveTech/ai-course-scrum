@@ -1,6 +1,9 @@
 """
 Env doctor — `make doctor`.
 
+Settings come from the environment, then ./.env, then ~/.config/ai-course-scrum/.env
+(see src/envfile.py).
+
 Checks every external dependency and prints one PASS/FAIL line each. Exits 1 if anything
 fails. A missing variable is a FAIL, never a skip: a silently skipped check is how a broken
 setup ships.
@@ -12,7 +15,6 @@ Secret values are never printed.
 from __future__ import annotations
 
 import json
-import os
 import sys
 import urllib.error
 import urllib.parse
@@ -21,6 +23,7 @@ import xmlrpc.client
 from dataclasses import dataclass
 from typing import Any, Callable, Mapping
 
+from src import envfile
 from src.extractor import MODEL_ID
 
 GROQ_MODELS_URL = "https://api.groq.com/openai/v1/models"
@@ -28,6 +31,8 @@ TEAMS_TOKEN_URL = "https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token"
 TEAMS_SCOPE = "https://api.botframework.com/.default"
 ODOO_WRITE_MODES = ("off", "dry", "on")
 TIMEOUT_S = 10
+# Cloudflare in front of Groq answers urllib's default "Python-urllib/x.y" with 403 (error 1010).
+USER_AGENT = "ai-course-scrum-doctor/0.1"
 
 # (method, url, headers, body) -> parsed JSON. Raises on HTTP or network error.
 Http = Callable[[str, str, Mapping[str, str], bytes | None], Any]
@@ -43,7 +48,7 @@ class Result:
 
 
 def _http(method: str, url: str, headers: Mapping[str, str], body: bytes | None) -> Any:
-    req = urllib.request.Request(url, data=body, headers=dict(headers), method=method)
+    req = urllib.request.Request(url, data=body, headers={"User-Agent": USER_AGENT, **headers}, method=method)
     with urllib.request.urlopen(req, timeout=TIMEOUT_S) as resp:
         return json.load(resp)
 
@@ -136,10 +141,14 @@ def run(env: Mapping[str, str], http: Http = _http, common: OdooCommon = _odoo_c
 
 
 def main(
-    env: Mapping[str, str] = os.environ,
+    env: Mapping[str, str] | None = None,
     http: Http = _http,
     common: OdooCommon = _odoo_common,
 ) -> int:
+    if env is None:
+        env, read = envfile.load()
+        sources = ", ".join(str(p) for p in read) or f"none found ({envfile.LOCAL_ENV}, {envfile.CONFIG_ENV})"
+        print(f"env files: {sources}\n")
     results = run(env, http, common)
     for r in results:
         print(f"{'PASS' if r.ok else 'FAIL'}  {r.name:<22} {r.detail}")
