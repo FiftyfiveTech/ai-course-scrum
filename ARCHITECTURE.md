@@ -306,10 +306,10 @@ list raises `ProjectNotPinnedError`.
 - **`<br/>` normalisation:** Odoo normalises to `<br>`. Never patch text by matching markup.
 - **`state` not `kanban_state`:** Odoo 19 removed `kanban_state`. Use `state`:
   `01_in_progress`, `02_changes_requested`, `03_approved`, `1_done`, `1_canceled`.
-- **Sandbox version:** the sandbox runs `odoo:17.0`, but the live tenant is Odoo 19 (see the
-  previous trap). Anything that depends on version-specific fields like `state` must be checked
-  against 19 before the pilot. Until the sandbox image matches, a sandbox pass is not proof of
-  19 behaviour.
+- **Sandbox version:** the sandbox runs `odoo:19.0`, to match the live tenant. Two 17 → 19
+  differences have bitten us so far: `res.users.groups_id` is now `group_ids`, and a fresh 19
+  database ships 14 stages of its own, so seeded stage ids start at 15 (the sandbox's Done is
+  `18`). Never hard-code a stage id; look it up by name within the pinned project.
 - **Sender email:** `message_post` fails ("please configure the sender's email address") when
   the posting user has no email. The live `scrum-bot` needs one, like the sandbox's.
 

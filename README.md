@@ -87,7 +87,7 @@ The bot never develops against the course board, and our tickets never live in t
 ### The sandbox
 
 ```bash
-make sandbox-up        # Odoo 17 + Postgres 16 in Docker on localhost:8069, seeded
+make sandbox-up        # Odoo 19 + Postgres 16 in Docker on localhost:8069, seeded
 make doctor-sandbox    # make doctor with the Odoo settings pointed at the sandbox
 make sandbox-down      # stop it; WIPE=1 also deletes its data
 ```

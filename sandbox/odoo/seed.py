@@ -81,7 +81,7 @@ def main() -> int:
     if not group:
         sys.exit("the project app is not installed in the sandbox database")
     bot = ensure("res.users", [["login", "=", login]],
-                 {"name": "Scrum Bot (sandbox)", "login": login, "groups_id": [(4, group[0]["res_id"])]})
+                 {"name": "Scrum Bot (sandbox)", "login": login, "group_ids": [(4, group[0]["res_id"])]})
     # Odoo refuses message_post (every board note) from a user with no email address.
     kw("res.users", "write", [[bot], {"password": password, "email": f"{login}@sandbox.invalid"}])
 
@@ -100,7 +100,7 @@ def main() -> int:
         task(name, project, stages["Plan Backlog"], bot)
     teammate = ensure("res.users", [["login", "=", TEAMMATE_LOGIN]],
                       {"name": "Teammate (sandbox)", "login": TEAMMATE_LOGIN,
-                       "email": f"{TEAMMATE_LOGIN}@sandbox.invalid", "groups_id": [(4, group[0]["res_id"])]})
+                       "email": f"{TEAMMATE_LOGIN}@sandbox.invalid", "group_ids": [(4, group[0]["res_id"])]})
     task(TEAMMATE_TASK, project, stages["Plan Backlog"], teammate)
     task(DONE_TASK, project, stages["Done"], bot)
     other = ensure("project.project", [["name", "=", OTHER_PROJECT]], {"name": OTHER_PROJECT})
