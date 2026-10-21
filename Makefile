@@ -14,11 +14,11 @@ setup:
 	@echo "ok. next: make test"
 
 test:
-	uv run pytest tests -q --ignore=tests/gates
+	.venv/bin/pytest tests -q --ignore=tests/gates
 
 gate:
 	@test -n "$$(ls tests/gates/*.py 2>/dev/null)" || { echo "no gates written yet — see tests/gates/README.md"; exit 1; }
-	uv run pytest tests/gates -q
+	.venv/bin/pytest tests/gates -q
 
 demo:
 	@echo "not implemented yet. make demo must run the system end to end from a clean clone."
