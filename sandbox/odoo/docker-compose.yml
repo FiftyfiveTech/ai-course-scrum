@@ -1,0 +1,36 @@
+# Local Odoo for testing the bot's Odoo code — `make sandbox-up`.
+# Throwaway: nothing here is the course board, and nothing here counts as gate evidence.
+name: scrum-odoo-sandbox
+
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo
+    volumes:
+      - db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U odoo"]
+      interval: 2s
+      retries: 30
+
+  odoo:
+    image: odoo:17.0
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      HOST: db
+      USER: odoo
+      PASSWORD: odoo
+    command: ["--database", "sandbox", "--db-filter", "^sandbox$$"]
+    ports:
+      - "127.0.0.1:8069:8069"  # localhost only
+    volumes:
+      - filestore:/var/lib/odoo
+
+volumes:
+  db:
+  filestore:
