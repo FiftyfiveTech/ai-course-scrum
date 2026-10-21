@@ -1,9 +1,9 @@
 {
   "mcpServers": {
     "odoo-board": {
-      "command": "python3",
-      "args": ["${AI_COURSE_KIT}/odoo_board_mcp.py"],
-      "env": {}
+      "command": "node",
+      "args": ["${AI_COURSE_KIT}/../odoo-board-node/server.mjs"],
+      "env": { "ODOO_PROJECT_ID": "88", "ODOO_DONE_STAGE_ID": "2210" }
     }
   }
 }
