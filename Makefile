@@ -1,6 +1,10 @@
 .PHONY: setup test gate demo doctor clean
 .DEFAULT_GOAL := help
 
+# .venv/bin on Linux/macOS, .venv/Scripts on Windows.
+PYTHON = $(firstword $(wildcard .venv/bin/python .venv/Scripts/python.exe))
+NEED_VENV = @test -n "$(PYTHON)" || { echo "no .venv - run make setup first"; exit 1; }
+
 help:
 	@echo "make setup   create the venv and install deps (uv)"
 	@echo "make test    unit tests"
@@ -15,21 +19,21 @@ setup:
 	@echo "ok. next: make test"
 
 test:
-	.venv/bin/pytest tests -q --ignore=tests/gates
+	$(NEED_VENV)
+	$(PYTHON) -m pytest tests -q --ignore=tests/gates
 
 gate:
 	@test -n "$$(ls tests/gates/*.py 2>/dev/null)" || { echo "no gates written yet — see tests/gates/README.md"; exit 1; }
-	.venv/bin/pytest tests/gates -q
+	$(NEED_VENV)
+	$(PYTHON) -m pytest tests/gates -q
 
 demo:
 	@test -n "$(GROQ_API_KEY)" || { echo "GROQ_API_KEY not set — export it from ~/.config/ before running make demo"; exit 1; }
-	PYTHONPATH=. .venv/bin/python -m src.demo
-
-# .venv/bin on Linux/macOS, .venv/Scripts on Windows.
-PYTHON := $(firstword $(wildcard .venv/bin/python .venv/Scripts/python.exe))
+	$(NEED_VENV)
+	PYTHONPATH=. $(PYTHON) -m src.demo
 
 doctor:
-	@test -n "$(PYTHON)" || { echo "no .venv — run make setup first"; exit 1; }
+	$(NEED_VENV)
 	PYTHONPATH=. $(PYTHON) -m src.doctor
 
 clean:
