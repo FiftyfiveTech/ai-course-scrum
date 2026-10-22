@@ -1,0 +1,50 @@
+{
+  "text": "Hi, what's up ",
+  "textFormat": "plain",
+  "attachments": [
+    {
+      "contentType": "text/html",
+      "content": "<p>Hi, what's up&nbsp;</p>"
+    }
+  ],
+  "type": "message",
+  "timestamp": "2026-10-22T05:46:55.3077264Z",
+  "localTimestamp": "2026-10-22T11:16:55.3077264+05:30",
+  "id": "1792648015124",
+  "channelId": "msteams",
+  "serviceUrl": "https://smba.trafficmanager.net/in/00000000-0000-0000-0000-00000000aaaa/",
+  "from": {
+    "id": "29:1-test-user-teams-id",
+    "name": "Test User",
+    "aadObjectId": "00000000-0000-0000-0000-00000000cccc"
+  },
+  "conversation": {
+    "conversationType": "personal",
+    "tenantId": "00000000-0000-0000-0000-00000000aaaa",
+    "id": "a:1-test-personal-conversation-id"
+  },
+  "recipient": {
+    "id": "28:00000000-0000-0000-0000-00000000bbbb",
+    "name": "Scrum Manager Dev"
+  },
+  "entities": [
+    {
+      "locale": "en-GB",
+      "country": "GB",
+      "platform": "Windows",
+      "timezone": "Asia/Calcutta",
+      "type": "clientInfo"
+    }
+  ],
+  "channelData": {
+    "tenant": {
+      "id": "00000000-0000-0000-0000-00000000aaaa"
+    },
+    "app": {
+      "id": "00000000-0000-0000-0000-00000000dddd",
+      "version": "1.0.0"
+    }
+  },
+  "locale": "en-GB",
+  "localTimezone": "Asia/Calcutta"
+}
