@@ -207,7 +207,9 @@ class StandUpLifecycle:
         commitment_ledger.record_from_extraction(
             self.db, self.standup_id, member_id, extraction_json
         )
-        commitment_ledger.mark_met_if_mentioned(self.db, member_id, extraction_json)
+        commitment_ledger.mark_met_if_mentioned(
+            self.db, self.standup_id, member_id, extraction_json
+        )
 
     def _set_state(self, state: str) -> None:
         self.db.execute(
