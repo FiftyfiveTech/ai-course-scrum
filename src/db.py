@@ -12,12 +12,13 @@ PRAGMA journal_mode = WAL;
 PRAGMA foreign_keys = ON;
 
 CREATE TABLE IF NOT EXISTS standup (
-    id          INTEGER PRIMARY KEY AUTOINCREMENT,
-    team_id     TEXT    NOT NULL,
-    date        DATE    NOT NULL,
-    state       TEXT    NOT NULL DEFAULT 'open',
-    opened_at   DATETIME NOT NULL,
-    closed_at   DATETIME,
+    id                INTEGER PRIMARY KEY AUTOINCREMENT,
+    team_id           TEXT    NOT NULL,
+    date              DATE    NOT NULL,
+    state             TEXT    NOT NULL DEFAULT 'open',
+    opened_at         DATETIME NOT NULL,
+    reminder_sent_at  DATETIME,
+    closed_at         DATETIME,
     UNIQUE(team_id, date)
 );
 
@@ -45,7 +46,10 @@ CREATE TABLE IF NOT EXISTS follow_up_question (
     answer_text   TEXT
 );
 
-CREATE TABLE IF NOT EXISTS commitment (
+-- Append-only: a state change inserts a new row, it never updates one in
+-- place. The current state of a (member_id, description) commitment is
+-- whichever row for that pair has the highest id.
+CREATE TABLE IF NOT EXISTS commitment_history (
     id               INTEGER  PRIMARY KEY AUTOINCREMENT,
     standup_id       INTEGER  NOT NULL REFERENCES standup(id),
     member_id        TEXT     NOT NULL,
@@ -53,7 +57,7 @@ CREATE TABLE IF NOT EXISTS commitment (
     due_date         DATE,
     date_type        TEXT     NOT NULL DEFAULT 'implied',
     state            TEXT     NOT NULL DEFAULT 'pending',
-    state_changed_at DATETIME
+    state_changed_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS blocker (
@@ -65,6 +69,18 @@ CREATE TABLE IF NOT EXISTS blocker (
     owner_id     TEXT,
     open         INTEGER  NOT NULL DEFAULT 1,
     resolved_at  DATETIME
+);
+
+CREATE TABLE IF NOT EXISTS odoo_write_log (
+    id               INTEGER  PRIMARY KEY AUTOINCREMENT,
+    standup_id       INTEGER  NOT NULL REFERENCES standup(id),
+    task_id          TEXT     NOT NULL,
+    kind             TEXT     NOT NULL,
+    payload          TEXT,
+    odoo_message_id  TEXT,
+    dry_run          INTEGER  NOT NULL DEFAULT 1,
+    written_at       DATETIME,
+    UNIQUE(standup_id, task_id, kind)
 );
 """
 
