@@ -327,6 +327,7 @@ list raises `ProjectNotPinnedError`.
 | Model | Groq free tier, `meta-llama/Llama-3.3-70B-Instruct` | HF id, zero spend |
 | Report writer | Template from DB | Model writes at most a one-line summary |
 | Pilot team | Course team (Ritika, Vimal, Yash, Saurabh) | Small, real, safe |
+| Teams bot hosting | Teams-managed bot, not Azure Bot Service | Zero spend, no OAuth/SSO needed |
 
 ---
 
