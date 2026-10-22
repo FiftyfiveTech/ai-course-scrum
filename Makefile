@@ -1,4 +1,4 @@
-.PHONY: setup test gate demo doctor sandbox-up sandbox-down doctor-sandbox clean
+.PHONY: setup test gate demo doctor teams sandbox-up sandbox-down doctor-sandbox clean
 .DEFAULT_GOAL := help
 
 # .venv/bin on Linux/macOS, .venv/Scripts on Windows.
@@ -11,6 +11,7 @@ help:
 	@echo "make gate    run every phase gate in tests/gates/"
 	@echo "make demo    run the thing end to end"
 	@echo "make doctor  PASS/FAIL per external dependency; non-zero exit on any FAIL"
+	@echo "make teams   run the Teams adapter on 127.0.0.1:3978/api/messages (needs a public tunnel for Teams to reach it)"
 	@echo "make sandbox-up       local Odoo in Docker on localhost:8069, seeded (sandbox/odoo/)"
 	@echo "make doctor-sandbox   make doctor with the Odoo settings pointed at the sandbox"
 	@echo "make sandbox-down     stop the sandbox (add WIPE=1 to delete its data)"
@@ -38,6 +39,10 @@ demo:
 doctor:
 	$(NEED_VENV)
 	PYTHONPATH=. $(PYTHON) -m src.doctor
+
+teams:
+	$(NEED_VENV)
+	PYTHONPATH=. $(PYTHON) -m src.adapters.teams
 
 SANDBOX = docker compose -f sandbox/odoo/docker-compose.yml
 
