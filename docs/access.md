@@ -46,6 +46,12 @@ The IT request was sent on 2026-10-21 and is still pending as of 2026-10-22.
 - Teams becomes an adapter swap in a later phase, not a blocker
 - `src/adapters/teams.py` is scaffolded and ready; it needs only the Azure credentials to activate
 
+**Pilot confirmed running on CLI adapter** — verified 2026-10-22:
+```
+make demo   # runs open → collect → follow_up → close → report via ScriptedCLIAdapter
+make gate   # 2 passed — no_leakage + continuity both green
+```
+
 ---
 
 ## What to do when IT approves

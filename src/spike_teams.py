@@ -43,16 +43,16 @@ def run_spike() -> None:
     log = _setup_logging()
     log.info("=== Teams spike START ===")
 
-    # Fail fast and clearly if credentials are missing
+    # Fail fast and clearly if credentials are missing — log each check as NOT-RUN
     required = ["TEAMS_APP_ID", "TEAMS_APP_PASSWORD", "TEAMS_CHANNEL_ID", "TEAMS_SERVICE_URL"]
     missing = [k for k in required if not os.environ.get(k)]
     if missing:
-        log.error(
-            "NO-GO: missing credentials: %s\n"
-            "Teams tenant approval is pending — see docs/access.md.\n"
-            "Pilot will run on the CLI adapter until access is granted.",
-            ", ".join(missing),
-        )
+        log.error("NO-GO: missing credentials: %s", ", ".join(missing))
+        log.info("C1 NOT-RUN: cannot post without TEAMS_APP_ID/PASSWORD/CHANNEL_ID/SERVICE_URL")
+        log.info("C2 NOT-RUN: cannot receive replies without RSC consent (B1c pending)")
+        log.info("C3 NOT-RUN: cannot read sender id without channel access (B1c pending)")
+        log.info("DECISION: NO-GO — Teams tenant approval pending (see docs/access.md)")
+        log.info("PILOT: running on CLI adapter (src/adapters/cli.py) — make demo")
         return
 
     from src.adapters.teams import TeamsAdapter

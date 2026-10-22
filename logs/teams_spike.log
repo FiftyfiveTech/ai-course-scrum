@@ -2,3 +2,10 @@
 2026-10-22 10:39:33,423  ERROR  NO-GO: missing credentials: TEAMS_APP_ID, TEAMS_APP_PASSWORD, TEAMS_CHANNEL_ID, TEAMS_SERVICE_URL
 Teams tenant approval is pending — see docs/access.md.
 Pilot will run on the CLI adapter until access is granted.
+2026-10-22 10:41:56,029  INFO  === Teams spike START ===
+2026-10-22 10:41:56,029  ERROR  NO-GO: missing credentials: TEAMS_APP_ID, TEAMS_APP_PASSWORD, TEAMS_CHANNEL_ID, TEAMS_SERVICE_URL
+2026-10-22 10:41:56,029  INFO  C1 NOT-RUN: cannot post without TEAMS_APP_ID/PASSWORD/CHANNEL_ID/SERVICE_URL
+2026-10-22 10:41:56,029  INFO  C2 NOT-RUN: cannot receive replies without RSC consent (B1c pending)
+2026-10-22 10:41:56,029  INFO  C3 NOT-RUN: cannot read sender id without channel access (B1c pending)
+2026-10-22 10:41:56,029  INFO  DECISION: NO-GO — Teams tenant approval pending (see docs/access.md)
+2026-10-22 10:41:56,029  INFO  PILOT: running on CLI adapter (src/adapters/cli.py) — make demo
