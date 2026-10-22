@@ -1,7 +1,8 @@
 """
 Stand-up update extractor.
 
-Calls openai/gpt-oss-120b via the Groq free-tier API.
+Calls openai/gpt-oss-120b via the Groq free-tier API, wired through LangChain
+(ChatGroq with structured output into the Extraction schema).
 Reads the prompt from prompts/extract_v1.md (never inline).
 Retries once on invalid output; stores FAILED if both attempts fail.
 """
@@ -13,8 +14,8 @@ import os
 from datetime import date
 from pathlib import Path
 
-from groq import Groq
-from pydantic import ValidationError
+from langchain_core.runnables import Runnable
+from langchain_groq import ChatGroq
 
 from schemas.update import Extraction, StoredUpdate
 
@@ -23,42 +24,40 @@ PROMPT_VERSION = "extract_v1"
 REPO_ROOT = Path(__file__).parent.parent
 PROMPT_PATH = REPO_ROOT / "prompts" / f"{PROMPT_VERSION}.md"
 
-_client: Groq | None = None
+_chain: Runnable | None = None
 
 
-def _get_client() -> Groq:
-    global _client
-    if _client is None:
+def _get_chain() -> Runnable:
+    """Lazily build the ChatGroq model bound to the Extraction schema.
+
+    json_mode mirrors the prior response_format={"type": "json_object"} contract:
+    the prompt describes the schema and the model returns a single JSON object,
+    which LangChain validates into an Extraction for us.
+    """
+    global _chain
+    if _chain is None:
         api_key = os.environ.get("GROQ_API_KEY")
         if not api_key:
             raise RuntimeError(
                 "GROQ_API_KEY not set. Add it to ~/.config/ and source it before running."
             )
-        _client = Groq(api_key=api_key)
-    return _client
+        llm = ChatGroq(model=MODEL_ID, temperature=0, api_key=api_key)
+        _chain = llm.with_structured_output(Extraction, method="json_mode")
+    return _chain
 
 
 def _load_prompt() -> str:
     return PROMPT_PATH.read_text()
 
 
-def _call_model(system_prompt: str, user_payload: dict) -> str:
-    client = _get_client()
-    response = client.chat.completions.create(
-        model=MODEL_ID,
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": json.dumps(user_payload)},
-        ],
-        temperature=0,
-        response_format={"type": "json_object"},
+def _call_model(system_prompt: str, user_payload: dict) -> Extraction:
+    chain = _get_chain()
+    return chain.invoke(
+        [
+            ("system", system_prompt),
+            ("human", json.dumps(user_payload)),
+        ]
     )
-    return response.choices[0].message.content
-
-
-def _parse_extraction(raw_json: str) -> Extraction:
-    data = json.loads(raw_json)
-    return Extraction.model_validate(data)
 
 
 def extract(
@@ -87,10 +86,9 @@ def extract(
 
     for attempt in range(2):
         try:
-            raw_json = _call_model(system_prompt, user_payload)
-            extraction = _parse_extraction(raw_json)
+            extraction = _call_model(system_prompt, user_payload)
             break
-        except (json.JSONDecodeError, ValidationError, Exception) as exc:
+        except Exception as exc:
             if attempt == 1:
                 # Both attempts failed — store FAILED, never guess
                 extraction = "FAILED"
