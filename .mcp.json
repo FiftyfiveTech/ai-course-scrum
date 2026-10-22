@@ -4,6 +4,19 @@
       "command": "python3",
       "args": ["${AI_COURSE_KIT}/odoo_board_mcp.py"],
       "env": {}
+    },
+    "odoo-sandbox": {
+      "command": "uv",
+      "args": ["run", "--no-project", "--with", "mcp", "python", "${AI_COURSE_KIT}/odoo_board_mcp.py"],
+      "env": {
+        "ODOO_URL": "http://127.0.0.1:8069",
+        "ODOO_DB": "sandbox",
+        "ODOO_PROJECT_ID": "1",
+        "ODOO_PROJECT_NAME": "AI Dev Learning (sandbox)",
+        "ODOO_DONE_STAGE_ID": "18",
+        "ODOO_USER": "scrum-bot",
+        "ODOO_KEY": "scrum-bot-sandbox"
+      }
     }
   }
 }
