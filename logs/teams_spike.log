@@ -1,0 +1,4 @@
+2026-10-22 10:39:33,423  INFO  === Teams spike START ===
+2026-10-22 10:39:33,423  ERROR  NO-GO: missing credentials: TEAMS_APP_ID, TEAMS_APP_PASSWORD, TEAMS_CHANNEL_ID, TEAMS_SERVICE_URL
+Teams tenant approval is pending — see docs/access.md.
+Pilot will run on the CLI adapter until access is granted.
