@@ -18,9 +18,11 @@ from datetime import date
 from functools import partial
 from typing import Any, Callable
 
+import src.blocker as blocker_ledger
 import src.commitment as commitment_ledger
 from src.adapters import Message
 from src.adapters.cli import ScriptedCLIAdapter
+from src.follow_up import FollowUpEngine
 
 
 class StandUpLifecycle:
@@ -74,6 +76,7 @@ class StandUpLifecycle:
     def follow_up(self) -> None:
         """
         Post rule-triggered questions (max 2 per member).
+        FollowUpEngine selects which rules fire; the model only words them.
         Collect scripted answers.
         """
         rows = self.db.execute(
@@ -81,48 +84,28 @@ class StandUpLifecycle:
             (self.standup_id,),
         ).fetchall()
 
-        for row in rows:
-            member_id = row["member_id"]
-            extraction_json = row["extraction"]
-            if not extraction_json or extraction_json == "FAILED":
-                continue
+        engine = FollowUpEngine(self.db, self.standup_id)
 
-            extraction = json.loads(extraction_json)
-            questions: list[tuple[str, str]] = []  # (rule, text)
+        # Also ask Q1 for members who sent no update
+        members_with_update = {row["member_id"] for row in rows}
+        silent_members = [m for m in self.members if m not in members_with_update]
 
-            # Q7 — open blocker mentioned
-            for blocker in extraction.get("blockers", []):
-                questions.append((
-                    "Q7",
-                    f"You mentioned a blocker: \"{blocker['text']}\". "
-                    f"Who is working on unblocking this?",
-                ))
+        all_member_extractions: list[tuple[str, dict | None]] = [
+            (row["member_id"],
+             json.loads(row["extraction"]) if row["extraction"] and row["extraction"] != "FAILED" else None)
+            for row in rows
+        ] + [(m, None) for m in silent_members]
 
-            # Q2 — dev says done on a task; task may still be In Progress on board
-            for done_item in extraction.get("done", []):
-                if done_item.get("task_id"):
-                    questions.append((
-                        "Q2",
-                        f"You said #{done_item['task_id']} is done. "
-                        f"Should it move to Review?",
-                    ))
+        for member_id, extraction in all_member_extractions:
+            questions = engine.select(
+                member_id=member_id,
+                extraction=extraction,
+                standup_date=self._standup_date,
+                board_tasks=None,  # wired in when SCRUM-016 (Odoo read) is ready
+            )
 
-            # Q-commit — open commitment from a prior day, not yet met
-            for comm in commitment_ledger.get_overdue(
-                self.db, member_id, self._standup_date
-            ):
-                # Skip if this commitment was recorded in today's standup
-                if comm["standup_id"] == self.standup_id:
-                    continue
-                questions.append((
-                    "Q-commit",
-                    f"You committed to \"{comm['description']}\" "
-                    f"(due {comm['due_date'] or 'next stand-up'}). "
-                    f"What's the status?",
-                ))
-
-            for rule, question_text in questions[:2]:  # cap at 2 per member
-                self.adapter.post_private(member_id, question_text)
+            for q in questions:
+                self.adapter.post_private(member_id, q.text)
                 self.db.execute(
                     """INSERT INTO follow_up_question
                        (standup_id, member_id, trigger_rule, question_text, asked_at)
@@ -130,8 +113,8 @@ class StandUpLifecycle:
                     (
                         self.standup_id,
                         member_id,
-                        rule,
-                        question_text,
+                        q.rule,
+                        q.text,
                         self.clock.now().isoformat(),
                     ),
                 )
@@ -150,7 +133,7 @@ class StandUpLifecycle:
                             answer.text,
                             self.standup_id,
                             member_id,
-                            rule,
+                            q.rule,
                         ),
                     )
                     self.db.commit()
@@ -208,6 +191,9 @@ class StandUpLifecycle:
             self.db, self.standup_id, member_id, extraction_json
         )
         commitment_ledger.mark_met_if_mentioned(
+            self.db, self.standup_id, member_id, extraction_json
+        )
+        blocker_ledger.record_from_extraction(
             self.db, self.standup_id, member_id, extraction_json
         )
 
