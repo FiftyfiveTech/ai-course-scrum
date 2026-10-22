@@ -19,11 +19,28 @@ Identifiers were replaced before committing; the shape and prefixes are real:
 | `29:1-test-user-teams-id` | Sender's Teams user id |
 | `a:1-test-personal-conversation-id` | Personal conversation id |
 
+## `installation_update_groupchat.json`
+
+Sent when the bot was added to the "AI Learning Course" group chat, captured 2026-10-22. Same
+placeholders as above, plus `19:test-group-chat-id@thread.v2` for the group chat id.
+
+- `type` is `installationUpdate` and `action` is `add` (`remove` when the bot is taken out). No
+  `text`: this is an event, not a message. Acknowledge it with 200; don't echo it.
+- `conversation.conversationType` is `groupChat` and `isGroup` is `true`. The id has the
+  `19:…@thread.v2` form, which contains `:` and `@`, so quote it before putting it in a URL.
+- `conversation.name` is the chat's name. Personal chats have none.
+- `from` has no `name` here, only the ids.
+- The activity `id` is `f:…`. Don't use it as `replyToId`; for a welcome message, post a new
+  activity to the conversation instead of replying to this one.
+- `channelData.settings.selectedChannel.id` repeats the conversation id.
+- This is the moment to remember the conversation for proactive stand-up messages:
+  `serviceUrl`, `conversation.id` and `tenantId` are all here.
+
 ## Fields the adapter uses
 
 | Field | Meaning | Use |
 |---|---|---|
-| `type` | `message` here; `conversationUpdate` when the bot is added or removed | Dispatch |
+| `type` | `message`, or `installationUpdate` / `conversationUpdate` for events such as the bot being added | Dispatch |
 | `id` | This activity's id | `replyToId` of the reply; dedup key (`update.chat_message_id`) |
 | `text` | Plain text of the message | Input to the extractor |
 | `serviceUrl` | Base URL to send replies to; region- and tenant-specific, ends in `/` | Reply URL. Take it from each activity, never hard-code it |
