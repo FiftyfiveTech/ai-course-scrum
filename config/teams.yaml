@@ -1,0 +1,14 @@
+# Scheduler config — one block per team.
+#
+#   timezone                 IANA zone the open/reminder/close times are in
+#   open_time                stand-up opens at/after this local time, Mon-Fri
+#   reminder_offset_minutes  one reminder is sent this many minutes before close
+#   close_time               stand-up closes at/after this local time
+#   holidays                 ISO dates skipped even though they fall on a weekday
+#
+course-team:
+  timezone: Asia/Kolkata
+  open_time: "09:00"
+  reminder_offset_minutes: 120
+  close_time: "11:00"
+  holidays: []
