@@ -1,0 +1,39 @@
+# Identity map — Teams user id ↔ Odoo res.users id ↔ name.
+#
+# Rules:
+#   - Pin members by Odoo login (email). Do NOT use display name alone —
+#     'Yash' matches three different res.users rows on this tenant.
+#   - teams_id: the value from the Bot Framework activity's `from.id` field.
+#     Leave blank ("") until the Teams bot is live and you can capture it.
+#   - odoo_id: the numeric id from res.users. Run:
+#       python -c "import xmlrpc.client; ..."  or check Odoo Settings → Users.
+#   - member_id: the internal handle used in the DB and reports.
+#     Must be stable — changing it loses commitment history.
+#
+# An incoming Teams message whose `from.id` does not match any teams_id
+# here is rejected: no extraction, no Odoo write, loud WARNING logged.
+
+members:
+  - member_id: "ritika"
+    name: "Ritika"
+    login: "ritika@fiftyfivetech.io"
+    teams_id: ""          # fill when Teams bot is live
+    odoo_id: ""           # fill from Odoo Settings → Users
+
+  - member_id: "vimal"
+    name: "Vimal"
+    login: "vimal.vashisth@fiftyfivetech.io"
+    teams_id: ""
+    odoo_id: ""
+
+  - member_id: "yash"
+    name: "Yash"
+    login: "yash.pancholi@fiftyfivetech.io"   # pin by login, not display name
+    teams_id: ""
+    odoo_id: ""
+
+  - member_id: "saurabh"
+    name: "Saurabh"
+    login: "saurabh@fiftyfivetech.io"
+    teams_id: ""
+    odoo_id: ""
