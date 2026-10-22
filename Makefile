@@ -31,9 +31,10 @@ gate:
 	$(PYTHON) -m pytest tests/gates -q
 
 demo:
-	@test -n "$(GROQ_API_KEY)" || { echo "GROQ_API_KEY not set — export it from ~/.config/ before running make demo"; exit 1; }
 	$(NEED_VENV)
-	PYTHONPATH=. $(PYTHON) -m src.demo
+	@test -f .env && set -a && . ./.env && set +a; \
+	test -n "$$GROQ_API_KEY" || { echo "GROQ_API_KEY not set — add it to .env or export it"; exit 1; }
+	set -a && . ./.env && set +a && PYTHONPATH=. $(PYTHON) -m src.demo
 
 doctor:
 	$(NEED_VENV)
