@@ -1,4 +1,4 @@
-.PHONY: setup test gate demo doctor teams sandbox-up sandbox-down doctor-sandbox clean
+.PHONY: setup test gate demo doctor teams sandbox-up sandbox-down doctor-sandbox test-sandbox clean
 .DEFAULT_GOAL := help
 
 # .venv/bin on Linux/macOS, .venv/Scripts on Windows.
@@ -15,6 +15,7 @@ help:
 	@echo "make sandbox-up       local Odoo in Docker on localhost:8069, seeded (sandbox/odoo/)"
 	@echo "make doctor-sandbox   make doctor with the Odoo settings pointed at the sandbox"
 	@echo "make sandbox-down     stop the sandbox (add WIPE=1 to delete its data)"
+	@echo "make test-sandbox     Odoo tests against the sandbox (doctor check + odoo-sandbox MCP board rules)"
 
 setup:
 	@command -v uv >/dev/null || { echo "uv not installed: curl -LsSf https://astral.sh/uv/install.sh | sh"; exit 1; }
@@ -24,7 +25,7 @@ setup:
 
 test:
 	$(NEED_VENV)
-	$(PYTHON) -m pytest tests -q --ignore=tests/gates
+	$(PYTHON) -m pytest tests -q --ignore=tests/gates --ignore=tests/sandbox
 
 gate:
 	@test -n "$$(ls tests/gates/*.py 2>/dev/null)" || { echo "no gates written yet — see tests/gates/README.md"; exit 1; }
@@ -32,9 +33,10 @@ gate:
 	$(PYTHON) -m pytest tests/gates -q
 
 demo:
-	@test -n "$(GROQ_API_KEY)" || { echo "GROQ_API_KEY not set — export it from ~/.config/ before running make demo"; exit 1; }
 	$(NEED_VENV)
-	PYTHONPATH=. $(PYTHON) -m src.demo
+	@test -f .env && set -a && . ./.env && set +a; \
+	test -n "$$GROQ_API_KEY" || { echo "GROQ_API_KEY not set — add it to .env or export it"; exit 1; }
+	set -a && . ./.env && set +a && PYTHONPATH=. $(PYTHON) -m src.demo
 
 doctor:
 	$(NEED_VENV)
@@ -61,6 +63,11 @@ sandbox-down:
 doctor-sandbox:
 	$(NEED_VENV)
 	set -a && . sandbox/odoo/sandbox.env && set +a && PYTHONPATH=. $(PYTHON) -m src.doctor
+
+# Needs `make sandbox-up`. Fails, never skips, when the sandbox is down.
+test-sandbox:
+	$(NEED_VENV)
+	PYTHONPATH=. $(PYTHON) -m pytest tests/sandbox -q
 
 clean:
 	rm -rf .venv .pytest_cache **/__pycache__
