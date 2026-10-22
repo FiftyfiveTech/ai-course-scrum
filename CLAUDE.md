@@ -44,4 +44,8 @@ call. Gemini and `groq/compound*` are out — no HF repo id.
 - `uv` for the env. `make setup` and `make demo` must work from a clean clone.
 - Secrets in `~/.config/`, never in the repo. `.env.example` lists the names only.
 - Every model call goes through the shared cost/latency logger.
+- **LangChain / LangGraph** are the orchestration layer: use LangChain for model/tool/prompt
+  plumbing and LangGraph for any multi-step or stateful agent flow, rather than hand-rolling it.
+  Model calls made through them still go through the shared cost/latency logger and still name
+  models by HF repo id — the framework changes *how* we wire calls, not the zero-spend rule.
 - Commit messages describe the change. No AI attribution, no co-author trailers.
