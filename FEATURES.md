@@ -28,7 +28,7 @@ Detailed behaviour is in [`ARCHITECTURE.md`](ARCHITECTURE.md).
 |---|---|---|
 | CLI adapter (stdin/stdout, fake clock) | `src/adapters/cli.py` | ✅ |
 | Teams adapter — receive + reply on @mention/DM, Bot Framework token | `src/adapters/teams.py` | ✅ (receiver) |
-| Teams `ChatAdapter` protocol (`post`/`get_replies`/`post_private`) | `src/adapters/teams.py` | 🛠️ POC-03 |
+| Teams `ChatAdapter` protocol (`post`/`get_replies`/`post_private`) | `src/adapters/teams.py` | ✅ POC-03 (offline tests; live send pending tenant) |
 | Teams spike C1/C2/C3 (channel scope) | `src/spike_teams.py` | 🛠️ scaffold; channel unverified |
 
 ## Teams delivery (POC)
