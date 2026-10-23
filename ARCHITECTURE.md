@@ -69,7 +69,8 @@ class ChatAdapter(Protocol):
 ```
 
 Adapters: **CLI** (stdin/stdout, fake clock — built first) and **Teams** (proactive messages,
-channel thread per stand-up — added in week 2 if B1 is unblocked).
+one thread per stand-up). The Teams adapter runs on the Teams-managed bot path (1:1 messaging
+proven; channel scope pending RSC consent) and is fronted by the FastAPI server described in §1.4.
 
 ### 1.3 Odoo adapter
 
@@ -87,6 +88,35 @@ during development.
 The adapter never targets the **course board** (the AI Dev Learning project), even though it
 lives on the same tenant. That board tracks our own tickets through the `odoo-board` MCP server
 and is not part of the product. See the README, "Odoo: two roles, two instances".
+
+### 1.4 Teams delivery: server, dashboard, hosting
+
+The Teams adapter is fronted by a **FastAPI server** (`src/server.py`) — one process serving both
+the bot and the dashboard over the same SQLite DB:
+
+- `POST /api/messages` — Bot Framework webhook; inbound activities flow to `StandUpLifecycle`.
+- `GET /dashboard` + `GET /api/*` — the read-only dashboard tab and its JSON routes.
+
+**One Teams app, two capabilities.** A single `manifest.json` declares the **bot** and a **static
+tab** (the dashboard). Both are the same install, backed by the same server and DB.
+
+**Proactive posting.** To open a stand-up on a schedule, the bot posts proactively using a stored
+**conversation reference** (`service_url` + `conversation_id`), captured on install (see the
+`conversation_ref` table in §3.2). The bot messaging endpoint is HTTP-triggered by Teams; the
+scheduler (§2.2) drives the proactive open.
+
+**Manager-only dashboard.** The dashboard is read-only and restricted to the project owner via
+**Teams SSO (Entra ID)**: the tab obtains an SSO token (`getAuthToken`), the server validates it
+and checks the viewer against the team's `owner_id` (§3.2). Non-owners are refused on `/dashboard`
+and every `/api/*` route — enforcement is server-side, not UI-hiding. SSO rides on the existing
+Entra app registration, **not** Azure Bot Service.
+
+**Hosting.** The pilot deploys to **Railway** (native Python/FastAPI, stable HTTPS domain,
+always-on), replacing the earlier ngrok / Azure App Service options. The bot messaging endpoint and
+the SSO Application ID URI both point at the Railway domain.
+
+**Out of POC scope:** dashboard control actions (open/pause/post-report), Adaptive Card forms, and
+the `/report` `/blockers` `/commitments` slash suite. See `teams-dashboard-poc.md`.
 
 ---
 
@@ -163,9 +193,22 @@ Team ──< StandUp ──< Update ──< FollowUpQuestion
 | Column | Type | Notes |
 |---|---|---|
 | `id` | TEXT PK | e.g. `course-team` |
-| `name` | TEXT | |
+| `name` | TEXT | Project name; set via `/scrum-setup` |
 | `timezone` | TEXT | e.g. `Asia/Kolkata` |
+| `standup_time` | TEXT | e.g. `09:00`; set via `/scrum-setup` |
+| `owner_id` | TEXT | Manager's Teams/Entra id (`aadObjectId`); gates the manager-only dashboard |
 | `odoo_project_ids` | TEXT | JSON list of pinned project ids |
+
+#### `conversation_ref`
+| Column | Type | Notes |
+|---|---|---|
+| `team_id` | FK → team | |
+| `service_url` | TEXT | Bot Framework service URL |
+| `conversation_id` | TEXT | Teams conversation id |
+| `captured_at` | DATETIME | On install / first activity |
+| UNIQUE | `(team_id)` | One group per team for the POC |
+
+The bot replays this reference to post proactively (open the stand-up on schedule) — see §1.4.
 
 #### `standup`
 | Column | Type | Notes |
@@ -327,7 +370,10 @@ list raises `ProjectNotPinnedError`.
 | Model | Groq free tier, `meta-llama/Llama-3.3-70B-Instruct` | HF id, zero spend |
 | Report writer | Template from DB | Model writes at most a one-line summary |
 | Pilot team | Course team (Ritika, Vimal, Yash, Saurabh) | Small, real, safe |
-| Teams bot hosting | Teams-managed bot, not Azure Bot Service | Zero spend, no OAuth/SSO needed |
+| Teams bot hosting | Teams-managed bot, not Azure Bot Service | Zero spend; Entra app registration only, no Azure subscription |
+| Deployment (pilot) | Railway | Native Python/FastAPI, stable HTTPS, always-on; replaces ngrok / Azure App Service |
+| Dashboard | Read-only, manager-only via Teams SSO | One tab for the manager; owner gate on the Entra app, not Azure Bot |
+| Teams app packaging | One app: bot + static tab | Single install, shared FastAPI server + DB |
 
 ---
 
