@@ -4,8 +4,10 @@ A Teams-managed bot that runs the team's daily stand-up. It opens and closes the
 schedule, extracts each developer's update into a validated schema, tracks commitments and
 blockers, asks rule-based follow-ups, builds the daily report, and writes back to Odoo through an
 allow-listed, dry-run-by-default writer. The core is platform-agnostic: Microsoft Teams is the
-live chat adapter, the CLI adapter (with a fake clock) drives tests and the demo. See
-[`ARCHITECTURE.md`](ARCHITECTURE.md).
+live chat adapter, the CLI adapter (with a fake clock) drives tests and the demo. For the pilot,
+one Teams app pairs the bot with a read-only, **manager-only dashboard tab**, both served by a
+FastAPI server and deployed on **Railway**. See [`ARCHITECTURE.md`](ARCHITECTURE.md) and
+[`teams-dashboard-poc.md`](teams-dashboard-poc.md) (POC scope and tickets).
 
 Built by hand, phase by phase, as the scrum track of the FiftyFive AI engineering course.
 
@@ -72,6 +74,18 @@ Verify integrity: `sha256sum evals/heldout/updates.json`
    calls, and the Odoo lines in `make doctor` — are expected to fail, and those failures are
    accepted until the board is populated. The sandbox has no such exception: `make doctor-sandbox`
    must pass. Every other test and gate must still pass.
+
+## Teams app: bot + dashboard (POC)
+
+The pilot ships as **one Teams app** with two capabilities over one FastAPI server and the pilot DB:
+
+- **Bot** — posts the daily prompt, collects each member's plain-text update, posts the report.
+- **Dashboard tab** — read-only, **manager-only** (Teams SSO): today's status + past daily logs.
+
+It runs on the **Teams-managed bot** path (Entra app registration via the Teams Developer Portal —
+no Azure Bot Service, zero spend) and deploys to **Railway** (native Python/FastAPI, stable HTTPS).
+Full scope, dependencies, and tickets are in [`teams-dashboard-poc.md`](teams-dashboard-poc.md),
+with hours in [`teams-dashboard-poc-plan.csv`](teams-dashboard-poc-plan.csv).
 
 ## Odoo: two roles, two instances
 

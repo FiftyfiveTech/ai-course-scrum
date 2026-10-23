@@ -1,0 +1,25 @@
+Ticket,Task,Hours
+POC-01,FastAPI server skeleton and POST /api/messages webhook,7
+POC-02,Minimal inbound Bot Framework token check,3
+POC-03,Teams adapter ChatAdapter protocol (post/get_replies/post_private),8
+POC-04,Conversation reference capture and storage for proactive messaging,6
+POC-05,Proactive scheduled posting spike (C1) and verification,6
+POC-06,Channel read without @mention spike (C2) and verification,6
+POC-07,Scheduler cron to lifecycle open and close,5
+POC-08,Wire StandUpLifecycle to Teams adapter,7
+POC-09,Standup prompt message on open,3
+POC-10,Report card posted on close,5
+POC-11,Dashboard API - standup today / members / history,6
+POC-12,Dashboard HTML - today panel and history with auto-refresh,7
+POC-13,Manager-only SSO gate on dashboard and API routes,7
+POC-14,Slash command /scrum-setup to team table with owner id,5
+POC-15,Slash command /add-member,4
+POC-16,Teams app manifest (bot + staticTab + webApplicationInfo),4
+POC-17,App icons (colour and outline),2
+POC-18,Package and install in Teams,3
+POC-19,Deploy to Railway and set messaging endpoint / SSO URI,3
+POC-20,Fixture-driven end-to-end integration test,6
+POC-21,Gate checks - no-leakage and continuity,3
+POC-22,End-to-end POC dry run,5
+POC-23,Bug-fix and hardening buffer,8
+,Total,119
