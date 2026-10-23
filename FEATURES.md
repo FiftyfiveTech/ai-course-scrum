@@ -38,6 +38,7 @@ See [`teams-dashboard-poc.md`](teams-dashboard-poc.md) for scope, tickets, and h
 | Feature | Where | Status |
 |---|---|---|
 | FastAPI server + `POST /api/messages` webhook (stores raw update row) | `src/server.py` | ✅ POC-01 |
+| Inbound Bot Framework token check (RS256 + issuer + audience) | `src/auth.py` | ✅ POC-02 |
 | Proactive posting (stored conversation reference) | `conversation_ref` table | 🛠️ POC-04/05 |
 | Dashboard API (`today` / `members` / `history`) | `src/server.py` | 🛠️ POC-11 |
 | Dashboard HTML (today + history, auto-refresh) | `src/dashboard.html` | 🛠️ POC-12 |

@@ -25,9 +25,10 @@ import sqlite3
 from datetime import date
 from typing import Any, Mapping
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, HTTPException, Request
 
 from src import db as db_module
+from src.auth import TokenError, TokenValidator, botframework_validator
 from src.clock import Clock, ClockProtocol
 from src.identity import IdentityMap, UnknownSenderError
 
@@ -117,13 +118,20 @@ def create_app(
     identity: IdentityMap,
     team_id: str,
     clock: ClockProtocol | None = None,
+    token_validator: TokenValidator | None = None,
 ) -> FastAPI:
-    """Build the FastAPI app around injected dependencies."""
+    """Build the FastAPI app around injected dependencies.
+
+    token_validator: when set, POST /api/messages rejects any request whose
+    Authorization header is missing or fails verification (POC-02). Left None in
+    tests that exercise ingestion only.
+    """
     app = FastAPI(title="AI Scrum Master")
     app.state.db = db
     app.state.identity = identity
     app.state.team_id = team_id
     app.state.clock = clock or Clock()
+    app.state.token_validator = token_validator
 
     @app.get("/healthz")
     def healthz() -> dict[str, str]:
@@ -131,6 +139,15 @@ def create_app(
 
     @app.post("/api/messages")
     async def messages(request: Request) -> dict[str, str]:
+        validator: TokenValidator | None = app.state.token_validator
+        if validator is not None:
+            try:
+                claims = validator.validate(request.headers.get("Authorization"))
+            except TokenError as exc:
+                logger.warning("rejected inbound request: %s", exc)
+                raise HTTPException(status_code=401, detail="invalid bot token") from exc
+            logger.info("accepted inbound token aud=%s iss=%s", claims.get("aud"), claims.get("iss"))
+
         activity = await request.json()
         ingest_activity(
             app.state.db,
@@ -151,4 +168,7 @@ def create_production_app() -> FastAPI:
     db = db_module.connect(os.environ.get("DB_PATH", "scrum.db"))
     identity = IdentityMap.from_config()
     team_id = os.environ.get("TEAM_ID", "course-team")
-    return create_app(db, identity, team_id)
+    app_id = os.environ.get("MICROSOFT_APP_ID")
+    if not app_id:
+        raise RuntimeError("MICROSOFT_APP_ID is required to verify inbound Bot Framework tokens")
+    return create_app(db, identity, team_id, token_validator=botframework_validator(app_id))
