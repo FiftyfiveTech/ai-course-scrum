@@ -105,11 +105,18 @@ tab** (the dashboard). Both are the same install, backed by the same server and 
 `conversation_ref` table in §3.2). The bot messaging endpoint is HTTP-triggered by Teams; the
 scheduler (§2.2) drives the proactive open.
 
-**Manager-only dashboard.** The dashboard is read-only and restricted to the project owner via
+**Role-based dashboard access.** The dashboard is read-only and restricted by role via
 **Teams SSO (Entra ID)**: the tab obtains an SSO token (`getAuthToken`), the server validates it
-and checks the viewer against the team's `owner_id` (§3.2). Non-owners are refused on `/dashboard`
-and every `/api/*` route — enforcement is server-side, not UI-hiding. SSO rides on the existing
-Entra app registration, **not** Azure Bot Service.
+and checks the viewer's role in the `team_member` table (§3.2). Enforcement is server-side, not
+UI-hiding. SSO rides on the existing Entra app registration, **not** Azure Bot Service.
+
+Three roles:
+
+| Role | Dashboard tab | Slash commands | Submits stand-up |
+|---|---|---|---|
+| `scrum_master` | Full access | All commands | Yes |
+| `product_owner` | Read-only | `/report` `/blockers` `/commitments` | No |
+| `software_engineer` | No access | None | Yes |
 
 **Hosting.** The pilot deploys to **Railway** (native Python/FastAPI, stable HTTPS domain,
 always-on), replacing the earlier ngrok / Azure App Service options. The bot messaging endpoint and
@@ -181,10 +188,10 @@ SQLite for the pilot. Every table has `created_at` and `updated_at`. Foreign key
 
 ```
 Team ──< StandUp ──< Update ──< FollowUpQuestion
-                │
-                ├──< CommitmentHistory
-                ├──< BlockerLedger
-                └──< OdooWriteLog
+  │                     │
+  ├──< TeamMember        ├──< CommitmentHistory
+  │                     ├──< BlockerLedger
+  └──< ConversationRef  └──< OdooWriteLog
 ```
 
 ### 3.2 Tables
@@ -198,6 +205,20 @@ Team ──< StandUp ──< Update ──< FollowUpQuestion
 | `standup_time` | TEXT | e.g. `09:00`; set via `/scrum-setup` |
 | `owner_id` | TEXT | Manager's Teams/Entra id (`aadObjectId`); gates the manager-only dashboard |
 | `odoo_project_ids` | TEXT | JSON list of pinned project ids |
+
+#### `team_member`
+| Column | Type | Notes |
+|---|---|---|
+| `id` | INTEGER PK | |
+| `team_id` | FK → team | |
+| `member_id` | TEXT | Teams `aadObjectId` |
+| `email` | TEXT | Used to match SSO token |
+| `name` | TEXT | Display name |
+| `role` | TEXT | `scrum_master / product_owner / software_engineer` |
+| `active` | INTEGER | 1 = active; 0 = removed |
+| `added_at` | DATETIME | |
+
+**Role rules:** `scrum_master` has full dashboard + all slash commands. `product_owner` has read-only dashboard + `/report` `/blockers` `/commitments`. `software_engineer` has no dashboard access — submits stand-up updates in the channel only. Roles are set via `/scrum-setup`.
 
 #### `conversation_ref`
 | Column | Type | Notes |
@@ -372,7 +393,8 @@ list raises `ProjectNotPinnedError`.
 | Pilot team | Course team (Ritika, Vimal, Yash, Saurabh) | Small, real, safe |
 | Teams bot hosting | Teams-managed bot, not Azure Bot Service | Zero spend; Entra app registration only, no Azure subscription |
 | Deployment (pilot) | Railway | Native Python/FastAPI, stable HTTPS, always-on; replaces ngrok / Azure App Service |
-| Dashboard | Read-only, manager-only via Teams SSO | One tab for the manager; owner gate on the Entra app, not Azure Bot |
+| Dashboard | Read-only, role-gated via Teams SSO | `scrum_master` full access; `product_owner` read-only; `software_engineer` no access |
+| Dashboard tech | Plain HTML + vanilla JS served by FastAPI | No React, no npm, no build step; same Railway server as the bot |
 | Teams app packaging | One app: bot + static tab | Single install, shared FastAPI server + DB |
 
 ---

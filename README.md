@@ -80,7 +80,10 @@ Verify integrity: `sha256sum evals/heldout/updates.json`
 The pilot ships as **one Teams app** with two capabilities over one FastAPI server and the pilot DB:
 
 - **Bot** — posts the daily prompt, collects each member's plain-text update, posts the report.
-- **Dashboard tab** — read-only, **manager-only** (Teams SSO): today's status + past daily logs.
+- **Dashboard tab** — read-only, role-gated via Teams SSO. Three roles:
+  - `scrum_master` — full dashboard access + all slash commands
+  - `product_owner` — read-only dashboard + `/report` `/blockers` `/commitments`
+  - `software_engineer` — no dashboard; submits stand-up updates in the channel only
 
 It runs on the **Teams-managed bot** path (Entra app registration via the Teams Developer Portal —
 no Azure Bot Service, zero spend) and deploys to **Railway** (native Python/FastAPI, stable HTTPS).
