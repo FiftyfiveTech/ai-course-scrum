@@ -1,0 +1,62 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.17/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.17",
+  "version": "1.0.0",
+  "id": "${MICROSOFT_APP_ID}",
+  "name": {
+    "short": "Scrum Bot",
+    "full": "AI Scrum Master — daily stand-up bot and manager dashboard"
+  },
+  "description": {
+    "short": "Runs your daily stand-up and surfaces a live manager dashboard.",
+    "full": "Posts a daily stand-up prompt, collects each member's done/next/blockers update, and reports back a summary. Managers get a read-only dashboard tab showing today's status and stand-up history."
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "accentColor": "#0078D4",
+  "bots": [
+    {
+      "botId": "${MICROSOFT_APP_ID}",
+      "scopes": ["groupChat", "team"],
+      "supportsFiles": false,
+      "isNotificationOnly": false,
+      "commandLists": [
+        {
+          "scopes": ["groupChat", "team"],
+          "commands": [
+            {
+              "title": "scrum-setup",
+              "description": "Configure stand-up time, timezone, and team for this group"
+            },
+            {
+              "title": "add-member",
+              "description": "Add a member to this team's stand-up roster"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "staticTabs": [
+    {
+      "entityId": "scrum-dashboard",
+      "name": "Stand-up Dashboard",
+      "contentUrl": "https://${RAILWAY_DOMAIN}/dashboard",
+      "websiteUrl": "https://${RAILWAY_DOMAIN}/dashboard",
+      "scopes": ["personal"]
+    }
+  ],
+  "webApplicationInfo": {
+    "id": "${MICROSOFT_APP_ID}",
+    "resource": "api://${RAILWAY_DOMAIN}/${MICROSOFT_APP_ID}"
+  },
+  "permissions": [
+    "identity",
+    "messageTeamMembers"
+  ],
+  "validDomains": [
+    "${RAILWAY_DOMAIN}"
+  ]
+}
