@@ -39,6 +39,14 @@ Every model and dataset is named by its **HF repo id** (`openai/whisper-large-v3
 via `ollama pull hf.co/<repo>`. **Zero spend**: any paid call is a STOP-and-ask, not a judgement
 call. Gemini and `groq/compound*` are out — no HF repo id.
 
+## Teams delivery (pilot)
+
+The live chat front end is a **Teams-managed bot** (Entra app registration via the Teams Developer
+Portal — **no Azure Bot Service**) fronted by a FastAPI server (`src/server.py`) that also serves a
+read-only, **manager-only dashboard tab** (Teams SSO). Pilot hosting is **Railway**. Scope, tickets,
+and the superseded Azure-Bot assumption live in `teams-dashboard-poc.md`. `FEATURES.md` indexes
+every module, gate, and doc for quick lookup.
+
 ## Conventions
 
 - `uv` for the env. `make setup` and `make demo` must work from a clean clone.
